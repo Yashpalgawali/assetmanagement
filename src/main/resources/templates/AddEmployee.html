@@ -28,7 +28,7 @@
 				url		:	'/getdeptbycompid/'+cid,
 				type	:	'GET',
 				dataType:	'JSON',
-				success : function(result)
+				success : 	function(result)
 				{
 					$.each(result,function(i){
 						$('#dept_id').append("<option value='"+result[i].dept_id+"'>"+result[i].dept_name+"</option>");	
@@ -60,9 +60,9 @@
 
 		$("#multi_assets").select2({
 			
-			width : 'resolve',
+			width 		: 'resolve',
 			placeholder : 'Please Select Asset(s) ',
-			allowClear : true
+			allowClear 	:  true
 
 		});
 	})

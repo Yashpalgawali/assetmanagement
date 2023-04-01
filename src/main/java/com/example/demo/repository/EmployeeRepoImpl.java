@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.models.Asset;
+import com.example.demo.models.AssetAssignHistory;
 import com.example.demo.models.AssetType;
 import com.example.demo.models.Company;
 import com.example.demo.models.Department;
@@ -29,19 +30,18 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	@Override
 	public int saveEmployee(Employee emp) {
 		// TODO Auto-generated method stub
-		return temp.update("insert into tbl_employee values('0',?,?,?,?,?,?,?)", new PreparedStatementSetter() {
+		return temp.update("insert into tbl_employee values('0',?,?,?,?,?)", new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				// TODO Auto-generated method stub
 			
-				ps.setLong(1, emp.getEmp_code());
-				ps.setString(2, emp.getEmp_name());
-				ps.setString(3, emp.getEmp_email());
-				ps.setString(4, emp.getEmp_contact());
-				ps.setLong(5, emp.getAsset_id());
-				ps.setLong(6, emp.getDept_id());
-				ps.setLong(7, emp.getDesig_id());
+				ps.setString(1, emp.getEmp_name());
+				ps.setString(2, emp.getEmp_email());
+				ps.setString(3, emp.getEmp_contact());
+				
+				ps.setLong(4, emp.getDept_id());
+				ps.setLong(5, emp.getDesig_id());
 			}
 		});
 	}
@@ -49,7 +49,7 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	@Override
 	public List<Employee> getAllEMployees() {
 		// TODO Auto-generated method stub
-		return temp.query("SELECT tbl_employee.*,tbl_asset.*,tbl_department.*,tbl_company.*,tbl_designation.*, GROUP_CONCAT(DISTINCT tbl_asset.asset_name) ASSET_NAMES FROM tbl_employee JOIN tbl_asset ON tbl_asset.asset_id=tbl_employee.asset_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id GROUP BY tbl_employee.emp_code", new RowMapper<>() {
+		return temp.query("select *,GROUP_CONCAT(DISTINCT tbl_asset.asset_name) from tbl_employee JOIN tbl_asset_assign_history ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIn tbl_company ON tbl_company.comp_id=tbl_department.comp_id", new RowMapper<>() {
 
 			@Override
 			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -58,11 +58,16 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				Employee emp = new Employee();
 				
 				emp.setEmp_id(rs.getLong(1));
-				emp.setEmp_code(rs.getLong(2));
-				emp.setEmp_name(rs.getString(3));
-				emp.setEmp_email(rs.getString(4));
-				emp.setEmp_contact(rs.getString(5));
-			
+				emp.setEmp_name(rs.getString(2));
+				emp.setEmp_email(rs.getString(3));
+				emp.setEmp_contact(rs.getString(4));
+				emp.setDept_id(rs.getLong(5));
+				emp.setDesig_id(rs.getLong(6));
+				
+				
+				AssetAssignHistory ahist = new AssetAssignHistory();
+				
+				
 				
 				Asset asset = new Asset();
 				
@@ -180,20 +185,18 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	}
 
 	@Override
-	public int getLastSavedEmployeeId() {
+	public Long getLastSavedEmployeeId() {
 		// TODO Auto-generated method stub
 		
-		Object res = temp.queryForObject("select MAX(emp_code) FROM tbl_employee", Object.class);
+		Long res = temp.queryForObject("SELECT MAX(emp_id) FROM tbl_employee", Long.class);
 		
 		if(res!=null)
 		{
-			String output = String.valueOf(res);
-			return Integer.parseInt(output);
+			return res;
 		}
 		else {
-			return 0;
+			return 0L;
 		}
-		
 	}
 
 	@Override

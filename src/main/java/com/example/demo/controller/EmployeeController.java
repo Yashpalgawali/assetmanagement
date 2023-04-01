@@ -101,10 +101,15 @@ public class EmployeeController {
 	{
 		String multi_asset_id = empl.getMulti_assets();
 		
-		int res =	0 ;
+		int res =0,rhist=0 ;
 		
 		char[] chararr = multi_asset_id.toCharArray();
 		
+		res = empserv.saveEmployee(empl);
+		
+		
+		if(res > 0)
+		{
 		for(int i=0;i<chararr.length;i++)
 		{
 			if(Character.isDigit(chararr[i]))
@@ -113,54 +118,29 @@ public class EmployeeController {
 				
 				asid = Character.getNumericValue(chararr[i]);
 				
+				System.err.println("Inside emp controller \n character value ->> "+chararr[i]+"\nNumneric value is ->> "+asid+"\n");
 				//empl.setMulti_assets(String.valueOf(asid));
 				
 				empl.setAsset_id((long)asid);
 				
 				today = LocalDateTime.now();
 				
-				Object lastemp = empserv.getLastSavedEmployeeId();
+				Long lastemp = empserv.getLastSavedEmployeeId();
 				
-				System.err.println("Last Saved employee code Is --> "+lastemp);
 				
-				if(sess.getAttribute("empcode")!=null)
-				{
-					if(lastemp!=null)
-					{
-						sess.setAttribute("empcode", sess.getAttribute("empcode"));
-					}
-				}
-				else 
-				{
-					if(lastemp!=null)
-					{
-						sess.setAttribute("empcode", lastemp);
-					}
-				}
-				
-				Integer ecode = (Integer) sess.getAttribute("empcode");
-				Long ecde = Long.valueOf(ecode);
-				
-				ecde+=1;
-				
-				empl.setEmp_code(ecde);
-				res = empserv.saveEmployee(empl);
-				
-				if(res>0)
-				{
-//					AssetAssignHistory ahist = new AssetAssignHistory();
-//					ahist.setAsset_id((long)asid);
-//					ahist.setOperation_date(tday);
-//					ahist.setOperation_time(ttime);
-//					ahist.setOperation("Asset Assigned");
-//					ahist.setEmp_code(ecde);
-//					
-//					assetassignserv.saveAssignAssetHistory(ahist);
-				}
+				AssetAssignHistory ahist = new AssetAssignHistory();
+					ahist.setAsset_id((long)asid);
+					ahist.setOperation_date(tday);
+					ahist.setOperation_time(ttime);
+					ahist.setOperation("Asset Assigned");
+					ahist.setEmp_id(lastemp);
+					
+					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 			}
+		  }
 		}
-		if(res>0)
-		{
+		
+		if(res>0 && rhist>0){
 			attr.addFlashAttribute("response", "Asset(s) assigned successfully ");
 			return "redirect:/viewassignedassets";
 		}
@@ -171,7 +151,7 @@ public class EmployeeController {
 }
 	
 	
-	@GetMapping("/viewassignedassets")
+	@GetMapping("/viewassignedassets")@ResponseBody
 	public String viewAssignedAssets(Model model)
 	{
 		//List<AssetAssignHistory> ahist = assetassignserv.getAllAssignedAssetsHistory();

@@ -16,6 +16,6 @@ public interface EmployeeService {
 	
 	public int updateEmployee(Employee emp);
 	
-	public Object getLastSavedEmployeeId();
+	public Long getLastSavedEmployeeId();
 	
 }

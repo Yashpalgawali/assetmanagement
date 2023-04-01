@@ -19,6 +19,6 @@ public interface EmployeeRepository {
 	
 	public int updateEmployee(Employee emp);
 	
-	public int getLastSavedEmployeeId();
+	public Long getLastSavedEmployeeId();
 	
 }

@@ -41,7 +41,7 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				ps.setString(2, hist.getOperation_date());
 				ps.setString(3, hist.getOperation_time());
 				ps.setString(4, hist.getOperation());
-				ps.setLong(5, hist.getEmp_code());
+				ps.setLong(5, hist.getEmp_id());
 					
 			}
 		});
@@ -63,7 +63,7 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				hist.setOperation_date(rs.getString(3));
 				hist.setOperation_time(rs.getString(4));
 				hist.setOperation(rs.getString(5));
-				hist.setEmp_code(rs.getLong(6));
+				hist.setEmp_id(rs.getLong(6));
 				
 				Employee emp = new Employee();
 				

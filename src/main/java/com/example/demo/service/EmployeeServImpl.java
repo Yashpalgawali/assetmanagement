@@ -39,7 +39,7 @@ public class EmployeeServImpl implements EmployeeService {
 	}
 
 	@Override
-	public Object getLastSavedEmployeeId() {
+	public Long getLastSavedEmployeeId() {
 		// TODO Auto-generated method stub
 		return emprepo.getLastSavedEmployeeId();
 	}
