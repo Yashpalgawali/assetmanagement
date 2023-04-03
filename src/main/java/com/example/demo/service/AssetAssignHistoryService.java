@@ -11,7 +11,7 @@ public interface AssetAssignHistoryService {
 	
 	public List<AssetAssignHistory> getAllAssignedAssetsHistory();
 	
-	public List<AssetAssignHistory> getAssetAssignHistoryEmpCode(String emp_code);
+	public List<AssetAssignHistory> getAssetAssignHistoryEmpId(String empid);
 	
 	public int updateAssetAssignHistory(AssetAssignHistory hist);
 }

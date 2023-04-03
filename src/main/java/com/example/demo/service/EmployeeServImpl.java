@@ -45,9 +45,9 @@ public class EmployeeServImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getEmployeeByEmpCode(String empcode) {
+	public List<Employee> getEmployeeByEmpId(String empid) {
 		// TODO Auto-generated method stub
-		return emprepo.getEmployeeByEmpCode(empcode);
+		return emprepo.getEmployeeByEmpId(empid);
 	}
 
 }

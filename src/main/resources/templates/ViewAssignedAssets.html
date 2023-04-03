@@ -84,26 +84,22 @@
 		                   <tr>
 		                      	<th>Sr No.</th>
 								<th>Employee Name</th>
+								<th>Assigned Asset(s)</th>
 								<th>Email</th>
 								<th>Contact</th>
-								
 								<th>Department</th>
 								<th>Company</th>
-								
-								
 		                   </tr>
 		               </thead>
 		               <tbody>
 		                   <tr th:each="emp : ${empl}">
 		                       <td th:text="${empStat.count}"></td>
 		                       <td th:text="${emp.emp_name}"></td>
-
+		                       <td th:text="${emp.asset_names }"></td>
 		                       <td th:text="${emp.emp_email}"></td>
 		                       <td th:text="${emp.emp_contact }"></td>
 		                       <td th:text="${emp.department.dept_name }"></td>
 		                       <td th:text="${emp.company.comp_name}"></td>
-		                       
-		                      
 		                   </tr>
 		              </tbody>
 			 </table>

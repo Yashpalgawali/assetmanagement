@@ -72,8 +72,8 @@
 					   <td th:text="${emp.company.comp_name}"></td>
 					   
                        <td>
-                       		<a th:href="@{/editempbyempcode/{id}(id=${emp.emp_code})}" class="btn btn-primary " style="margin:5px;">Edit</a>
-                       		<a th:href="@{/viewemphistbyempcode/{id}(id=${emp.emp_code})}" class="btn btn-primary " ><i class="fa fa-eye fa-lg"></i> History</a>
+                       		<a th:href="@{/editempbyempid/{id}(id=${emp.emp_id})}" class="btn btn-primary " style="margin:5px;">Edit</a>
+                       		<a th:href="@{/viewemphistbyempid/{id}(id=${emp.emp_id})}" class="btn btn-primary " ><i class="fa fa-eye fa-lg"></i> History</a>
                        </td>
                    </tr>
                </tbody>

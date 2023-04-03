@@ -148,15 +148,14 @@ public class EmployeeController {
 			attr.addFlashAttribute("reserr", "Asset(s) not assigned ");
 			return "redirect:/viewassignedassets";
 		}
-}
+	}
 	
 	
-	@GetMapping("/viewassignedassets")@ResponseBody
+	@GetMapping("/viewassignedassets")
 	public String viewAssignedAssets(Model model)
 	{
-		//List<AssetAssignHistory> ahist = assetassignserv.getAllAssignedAssetsHistory();
-		
 		List<Employee> empl = empserv.getAllEMployees();
+		
 		model.addAttribute("empl", empl);
 		return "ViewAssignedAssets";
 	}
@@ -170,10 +169,10 @@ public class EmployeeController {
 		return "ViewEmployees";
 	}
 	
-	@GetMapping("/editempbyempcode/{id}")
+	@GetMapping("/editempbyempid/{id}")
 	public String editEmployeeById(@PathVariable("id")String id,Model model,RedirectAttributes attr)
 	{
-		List<Employee> emp = empserv.getEmployeeByEmpCode(id);
+		List<Employee> emp = empserv.getEmployeeByEmpId(id);
 		Employee empl = null;
 		
 		String emp_codes="";
@@ -272,10 +271,10 @@ public class EmployeeController {
 		return "ViewAllEmployees";
 	}
 	
-	@GetMapping("/viewemphistbyempcode/{id}")
+	@GetMapping("/viewemphistbyempid/{id}")
 	public String viewEmpHistoryByEmpCode(@PathVariable("id") String id,Model model)
 	{
-		List<Employee> emp = empserv.getEmployeeByEmpCode(id);
+		List<Employee> emp = empserv.getEmployeeByEmpId(id);
 		
 		Employee empl = null;
 		for(int i=0;i<emp.size();i++)
@@ -283,9 +282,7 @@ public class EmployeeController {
 			empl = emp.get(i);
 		}
 		
-		List<AssetAssignHistory> ahist = histserv.getAssetAssignHistoryEmpCode(""+empl.getEmp_code());
-		
-		
+		List<AssetAssignHistory> ahist = histserv.getAssetAssignHistoryEmpId(id);
 		
 		model.addAttribute("ahist", ahist);
 		model.addAttribute("emp", empl);

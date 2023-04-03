@@ -16,6 +16,7 @@ import com.example.demo.models.AssetAssignHistory;
 import com.example.demo.models.AssetType;
 import com.example.demo.models.Company;
 import com.example.demo.models.Department;
+import com.example.demo.models.Designation;
 import com.example.demo.models.Employee;
 
 @Repository("assetassignrepo")
@@ -113,75 +114,74 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 	}
 
 	@Override
-	public List<AssetAssignHistory> getAssetAssignHistoryEmpCode(String emp_code) {
+	public List<AssetAssignHistory> getAssetAssignHistoryEmpId(String empid) {
 		// TODO Auto-generated method stub
 		
-		System.err.println("Inside gethistory repo \nEMployee code is -->> "+emp_code);
-		
-		return temp.query("SELECT tbl_asset_assign_history.*,tbl_employee.emp_code,tbl_employee.emp_name,tbl_employee.emp_email,\r\n"
-				+ "tbl_employee.emp_contact,tbl_asset.*,tbl_assettype.*,tbl_department.*,tbl_company.*\r\n"
-				+ "FROM  tbl_asset_assign_history \r\n"
-				+ "JOIN   tbl_employee   ON tbl_employee.emp_code=tbl_asset_assign_history.emp_code \r\n"
-				+ "JOIN   tbl_asset 	  ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id  \r\n"
-				+ "JOIN   tbl_assettype  ON tbl_assettype.type_id=tbl_asset.type_id \r\n"
-				+ "JOIN   tbl_department ON tbl_department.dept_id=tbl_employee.dept_id \r\n"
-				+ "JOIN   tbl_company    ON tbl_company.comp_id=tbl_department.comp_id\r\n"
-				+ "WHERE  tbl_asset_assign_history.emp_code='"+emp_code+"' GROUP BY tbl_asset_assign_history.hist_id;", new RowMapper<>() {
-
+		return temp.query(" SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
 			@Override
 			public AssetAssignHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
 				
-				AssetAssignHistory hist = new AssetAssignHistory();
+				AssetAssignHistory ahist = new AssetAssignHistory();
 				
-				hist.setHist_id(rs.getLong(1));
-				hist.setAsset_id(rs.getLong(2));
-				hist.setOperation_date(rs.getString(3));
-				hist.setOperation_time(rs.getString(4));
-				hist.setOperation(rs.getString(5));
-				hist.setEmp_code(rs.getLong(6));
+				ahist.setHist_id(rs.getLong(1));
+				ahist.setAsset_id(rs.getLong(2));
+				ahist.setOperation_date(rs.getString(3));
+				ahist.setOperation_time(rs.getString(4));
+				ahist.setOperation(rs.getString(5));
+				ahist.setEmp_id(rs.getLong(6));
 				
 				Employee emp = new Employee();
 				
-				emp.setEmp_code(rs.getLong(7));
-				
+				emp.setEmp_id(rs.getLong(7));
 				emp.setEmp_name(rs.getString(8));
 				emp.setEmp_email(rs.getString(9));
 				emp.setEmp_contact(rs.getString(10));
+				emp.setDept_id(rs.getLong(11));
+				emp.setDesig_id(rs.getLong(12));
 				
-				Asset ast = new Asset();
-				ast.setAsset_id(rs.getLong(11));
-				ast.setAsset_name(rs.getString(12));
-				ast.setType_id(rs.getLong(13));
-				ast.setAsset_number(rs.getString(14));
-				ast.setModel_number(rs.getString(15));
+				ahist.setEmployee(emp);
 				
-
+				Asset asset = new Asset();
+				
+				asset.setAsset_id(rs.getLong(13));
+				asset.setAsset_name(rs.getString(14));
+				asset.setType_id(rs.getLong(15));
+				asset.setAsset_number(rs.getString(16));
+				asset.setModel_number(rs.getString(17));
+				
+				ahist.setAsset(asset);
+				
 				AssetType atype = new AssetType();
 				
-				atype.setType_id(rs.getLong(16));
-				atype.setType_name(rs.getString(17));
+				atype.setType_id(rs.getLong(18));
+				atype.setType_name(rs.getString(19));
 				
+				ahist.setAstype(atype);
 				
-				Department dept =new Department();
+				Designation desig = new Designation();
+				desig.setDesig_id(rs.getLong(20));
+				desig.setDesig_name(rs.getString(21));
 				
-				dept.setDept_id(rs.getLong(18));
-				dept.setDept_name(rs.getString(19));
+				ahist.setDesig(desig);
+				
+				Department dept = new Department();
+				
+				dept.setDept_id(rs.getLong(22));
+				dept.setDept_name(rs.getString(23));
+				
+				ahist.setDept(dept);
 				
 				Company comp = new Company();
 				
-				comp.setComp_id(rs.getLong(20));
-				comp.setComp_name(rs.getString(22));
+				comp.setComp_id(rs.getLong(24));
+				comp.setComp_name(rs.getString(26));
 				
 				
-				hist.setAsset(ast);
-				hist.setDept(dept);
-				hist.setCompany(comp);
-				hist.setEmployee(emp);
-				
-				return hist;
+				ahist.setCompany(comp);
+				return ahist;
 			}
-		});
+	 });
 	}
 
 	@Override

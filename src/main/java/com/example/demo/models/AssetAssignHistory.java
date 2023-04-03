@@ -29,8 +29,18 @@ public class AssetAssignHistory {
 	
 	private String operation;
 	
+	private Designation desig;
 	
 	
+	
+	public Designation getDesig() {
+		return desig;
+	}
+
+	public void setDesig(Designation desig) {
+		this.desig = desig;
+	}
+
 	public String getOperation_date() {
 		return operation_date;
 	}

@@ -13,9 +13,9 @@ public interface EmployeeRepository {
 	
 	public List<Employee> getEmployeeById(String id);
 	
-	public List<Employee> getEmployeeByEmpCode(String empcode);
+	public List<Employee> getEmployeeByEmpId(String empid);
 	
-	public List<Employee> getEmployeeHistoryByEmpCode(String empcode);
+	public List<Employee> getEmployeeHistoryByEmpId(String empid);
 	
 	public int updateEmployee(Employee emp);
 	

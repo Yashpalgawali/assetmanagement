@@ -10,7 +10,7 @@ public interface AssetAssignHistoryRepo {
 	
 	public List<AssetAssignHistory> getAllAssignedAssetsHistory();
 	
-	public List<AssetAssignHistory> getAssetAssignHistoryEmpCode(String hist_id);
+	public List<AssetAssignHistory> getAssetAssignHistoryEmpId(String emp_id);
 	
 	public int updateAssetAssignHistory(AssetAssignHistory hist);
 	

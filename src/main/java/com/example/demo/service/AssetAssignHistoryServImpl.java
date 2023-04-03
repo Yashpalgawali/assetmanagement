@@ -28,9 +28,9 @@ public class AssetAssignHistoryServImpl implements AssetAssignHistoryService {
 	}
 
 	@Override	
-	public List<AssetAssignHistory> getAssetAssignHistoryEmpCode(String emp_code) {
+	public List<AssetAssignHistory> getAssetAssignHistoryEmpId(String empid) {
 		// TODO Auto-generated method stub
-		return assetassignrepo.getAssetAssignHistoryEmpCode(emp_code);
+		return assetassignrepo.getAssetAssignHistoryEmpId(empid);
 	}
 
 	@Override

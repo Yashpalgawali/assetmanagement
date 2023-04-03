@@ -2,30 +2,51 @@ package com.example.demo.models;
 
 public class Employee {
 
-	private Long 	emp_id;
+	private Long 		emp_id;
 	
-	private String 	emp_name;
+	private String 		emp_name;
 	
-	private String 	emp_email;
+	private String 		emp_email;
 	
-	private String	emp_contact;
+	private String		emp_contact;
 	
-	private Long 	dept_id;
+	private Long 		dept_id;
 	
-	private Long 	asset_id;
+	private Long 		asset_id;
 	
-	private String 	multi_assets;
+	private String 		multi_assets;
 	
-	private Long 	emp_code;
+	private Long 		emp_code;
 	
-	private String 	asset_names;
+	private String 		asset_names;
 	
-	private String 	asset_types;
+	private String 		asset_types;
 	
-	private Department department;
+	private String 		emp_codes;
 	
-	private String emp_codes;
+	private AssetType 	assettype;
 	
+	private Department  department;
+	
+	private AssetAssignHistory ahist;
+	
+	
+	public AssetAssignHistory getAhist() {
+		return ahist;
+	}
+
+	public void setAhist(AssetAssignHistory ahist) {
+		this.ahist = ahist;
+	}
+
+	public AssetType getAssettype() {
+		return assettype;
+	}
+
+	public void setAssettype(AssetType assettype) {
+		this.assettype = assettype;
+	}
+
 	public  String getEmp_codes() {
 		return emp_codes;
 	}
@@ -68,7 +89,7 @@ public class Employee {
 
 	private Asset asset;
 	
-	private AssetType astype;
+
 	
 	private Long type_id;
 	
@@ -113,13 +134,7 @@ public class Employee {
 		this.comp_id = comp_id;
 	}
 
-	public AssetType getAstype() {
-		return astype;
-	}
-
-	public void setAstype(AssetType astype) {
-		this.astype = astype;
-	}
+	
 
 	public Long getType_id() {
 		return type_id;
@@ -198,13 +213,9 @@ public class Employee {
 		return "Employee [emp_id=" + emp_id + ", emp_name=" + emp_name + ", emp_email=" + emp_email + ", emp_contact="
 				+ emp_contact + ", dept_id=" + dept_id + ", asset_id=" + asset_id + ", multi_assets=" + multi_assets
 				+ ", emp_code=" + emp_code + ", asset_names=" + asset_names + ", asset_types=" + asset_types
-				+ ", department=" + department + ", emp_codes=" + emp_codes + ", asset=" + asset + ", astype=" + astype
-				+ ", type_id=" + type_id + ", company=" + company + ", comp_id=" + comp_id + ", designation="
-				+ designation + ", desig_id=" + desig_id + "]";
+				+ ", department=" + department + ", emp_codes=" + emp_codes + ", assettype=" + assettype + ", ahist="
+				+ ahist + ", asset=" + asset + ", type_id=" + type_id + ", company=" + company + ", comp_id=" + comp_id
+				+ ", designation=" + designation + ", desig_id=" + desig_id + "]";
 	}
-
-	
-	
-	
 
 }

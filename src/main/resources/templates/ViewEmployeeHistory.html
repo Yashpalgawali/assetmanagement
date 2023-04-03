@@ -74,7 +74,7 @@
 			</div>
 		<div class="mb-2" style="margin:10px 0 0 10px;">
 			
-			 	<h6 style="float:left;">Employee Name : [[${emp.emp_name}]]</h6>
+			 	<h6 style="float:left;" >Employee Name : [[${emp.emp_name}]]</h6>
 			 
 			 <h6 style="float:right;margin-right:10px;">Department: [[${emp.department.dept_name}]]</h6>
 		</div>
@@ -94,20 +94,14 @@
 		                       	<th>Asset(s)</th>
 		                       	<th>Operation Date Time</th>
 		                     	<th>Operation</th>
-		                       	<th>Edit</th>
 		                   </tr>
 		               </thead>
 		               <tbody>
 		                   <tr th:each="hist : ${ahist}">
-		                       <td th:text="${histStat.count}"></td>
-		                       <td th:text="${hist.asset.asset_name}"></td>
-		                       <td th:text="|${hist.operation_date} ${hist.operation_time}|"></td>
-		                     	<td th:text="${hist.operation}"></td>
-		                       <td>
-		                       		<a th:href="@{/editcompany/{id}(id=${hist.hist_id})}" class="btn btn-primary">
-		                       			<i class="fa fa-edit"></i>&nbsp;&nbsp;Edit
-		                       		</a>
-		                       </td>
+		                       	<td th:text="${histStat.count}"></td>
+		                       	<td th:text="${hist.asset.asset_name}"></td>
+		                       	<td th:text="|${hist.operation_date} ${hist.operation_time}|"></td>
+		                       	<td th:text="${hist.operation}"></td>
 		                   </tr>
 		              </tbody>
 			 </table>
