@@ -254,7 +254,7 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	@Override
 	public List<Employee> getEmployeeHistoryByEmpId(String empid) {
 		// TODO Auto-generated method stub
-		return temp.query(" SELECT * FROM tbl_employee JOIN tbl_asset_assign_history ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
+		return temp.query("SELECT * FROM tbl_employee JOIN tbl_asset_assign_history ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
 
 			@Override
 			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -318,6 +318,80 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				emp.setCompany(comp);
 				
 				emp.setAsset_names(rs.getString(27));
+				return emp;
+			}
+	 });
+	}
+
+	@Override
+	public List<Employee> getEmployeeAssignAssetsByEmpId(String empid) {
+		// TODO Auto-generated method stub
+		return temp.query("SELECT *,GROUP_CONCAT(tbl_asset.asset_name),GROUP_CONCAT(tbl_assettype.type_name) FROM tbl_employee JOIN tbl_asset_assign_history ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"' AND tbl_asset_assign_history.operation='Asset Assigned' OR tbl_asset_assign_history.operation='Asset Updated' ", new RowMapper<>() {
+
+			@Override
+			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				
+				Employee emp = new Employee();
+				
+				emp.setEmp_id(rs.getLong(1));
+				emp.setEmp_name(rs.getString(2));
+				emp.setEmp_email(rs.getString(3));
+				emp.setEmp_contact(rs.getString(4));
+				emp.setDept_id(rs.getLong(5));
+				emp.setDesig_id(rs.getLong(6));
+				
+				
+				AssetAssignHistory ahist = new AssetAssignHistory();
+				
+				ahist.setHist_id(rs.getLong(7));
+				ahist.setAsset_id(rs.getLong(8));
+				ahist.setOperation_date(rs.getString(9));
+				ahist.setOperation_time(rs.getString(10));
+				ahist.setOperation(rs.getString(11));
+				ahist.setEmp_id(rs.getLong(12));
+				
+				emp.setAhist(ahist);
+				
+				Asset asset = new Asset();
+				
+				asset.setAsset_id(rs.getLong(13));
+				asset.setAsset_name(rs.getString(14));
+				asset.setType_id(rs.getLong(15));
+				asset.setAsset_number(rs.getString(16));
+				asset.setModel_number(rs.getString(17));
+				
+				emp.setAsset(asset);
+				
+				AssetType atype = new AssetType();
+				
+				atype.setType_id(rs.getLong(18));
+				atype.setType_name(rs.getString(19));
+				
+				emp.setAssettype(atype);
+				
+				Designation desig = new Designation();
+				desig.setDesig_id(rs.getLong(20));
+				desig.setDesig_name(rs.getString(21));
+				
+				emp.setDesignation(desig);
+				
+				Department dept = new Department();
+				
+				dept.setDept_id(rs.getLong(22));
+				dept.setDept_name(rs.getString(23));
+				
+				emp.setDepartment(dept);
+				
+				Company comp = new Company();
+				comp.setComp_id(rs.getLong(24));
+				comp.setComp_name(rs.getString(26));
+				
+				emp.setCompany(comp);
+				
+				emp.setAsset_names(rs.getString(27));
+				emp.setAsset_types(rs.getString(28));
+				
 				return emp;
 			}
 	 });

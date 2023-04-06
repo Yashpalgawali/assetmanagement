@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.models.Asset;
 import com.example.demo.models.AssetAssignHistory;
 import com.example.demo.models.AssetType;
+import com.example.demo.models.AssignedAssets;
 import com.example.demo.models.Company;
 import com.example.demo.models.Department;
 import com.example.demo.models.Designation;
@@ -28,6 +29,7 @@ import com.example.demo.models.Employee;
 import com.example.demo.service.AssetAssignHistoryService;
 import com.example.demo.service.AssetService;
 import com.example.demo.service.AssetTypeService;
+import com.example.demo.service.AssignedAssetsService;
 import com.example.demo.service.CompanyService;
 import com.example.demo.service.DepartmentService;
 import com.example.demo.service.DesignationServImpl;
@@ -96,6 +98,9 @@ public class EmployeeController {
 	@Autowired
 	AssetAssignHistoryService assetassignserv;
 	
+	@Autowired
+	AssignedAssetsService assignedassetserv;
+	
 	@RequestMapping("/saveassignasset")
 	public String saveEmployee(@ModelAttribute("Employee")Employee empl,HttpSession sess, RedirectAttributes attr)
 	{
@@ -129,11 +134,21 @@ public class EmployeeController {
 				
 				
 				AssetAssignHistory ahist = new AssetAssignHistory();
+				
 					ahist.setAsset_id((long)asid);
 					ahist.setOperation_date(tday);
 					ahist.setOperation_time(ttime);
 					ahist.setOperation("Asset Assigned");
 					ahist.setEmp_id(lastemp);
+					
+					
+				AssignedAssets assts = new AssignedAssets();
+					assts.setEmp_id(lastemp);
+					assts.setAsset_id((long)asid);
+					assts.setAssign_date(tday);
+					assts.setAssign_time(ttime);
+					
+					assignedassetserv.saveAssignedAssets(assts);
 					
 					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 			}
@@ -172,18 +187,17 @@ public class EmployeeController {
 	@GetMapping("/editempbyempid/{id}")
 	public String editEmployeeById(@PathVariable("id")String id,Model model,RedirectAttributes attr)
 	{
-		List<Employee> emp = empserv.getEmployeeByEmpId(id);
+		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
 		Employee empl = null;
 		
 		String emp_codes="";
-		System.out.println("\nSize of list is -->> "+emp.size()+"\n");
+		System.out.println("\nSize of List is -->> "+emp.size()+"\n");
 		
 		for(int i=0;i<emp.size();i++)
 		{
 			empl = emp.get(i);
-			emp_codes = empl.getEmp_code().toString();
+			emp_codes = empl.getEmp_id().toString();
 		}
-		
 		
 		if(empl!=null)
 		{
@@ -202,7 +216,12 @@ public class EmployeeController {
 			model.addAttribute("emp", 		empl);
 			model.addAttribute("ecode", 	emp_codes);
 			
-			System.err.println("\n Assigned asset id I-s ->> "+empl.toString()+"\n");
+		//	System.err.println("\n Assigned asset string is "+empl.getAsset_names());
+			
+			List<String> assignedassetlist = List.of(empl.getAsset_names().split(","));
+			
+			model.addAttribute("assignedlist", assignedassetlist);
+			//System.err.println("\n Assigned asset id Is ->> "+empl.toString()+"\n");
 			
 			return "EditEmployee";
 		}
@@ -287,6 +306,48 @@ public class EmployeeController {
 		model.addAttribute("ahist", ahist);
 		model.addAttribute("emp", empl);
 		return "ViewEmployeeHistory";
+	}
+
+	
+	@GetMapping("/retrieveassetsbyempid/{id}")
+	public String retrieveAssetsByEmpId(@PathVariable String id,Model model,RedirectAttributes attr)
+	{
+		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
+
+		Employee empl = null;
+		for(int i=0;i<emp.size();i++)
+		{
+			empl = emp.get(i);
+		}
+		
+		if(empl!=null)
+		{
+			List<Asset>  	 	aslist 		= asservice.getAllAssets();
+			List<AssetType>  	atypelist 	= atypeserv.getAllAssetTypes();
+			List<String> assignedassetlist  = List.of(empl.getAsset_names().split(","));
+			
+			model.addAttribute("atlist", 	atypelist);
+			model.addAttribute("aslist", 	aslist);
+			
+			model.addAttribute("emp", 		empl);
+			model.addAttribute("assignedlist", assignedassetlist);
+			
+			return "RetrieveAssets";
+		}
+		else {
+		
+			attr.addFlashAttribute("reserr", "No Employee found for given Id");
+			return "redirect:/viewemployees";
+		}
+		
+	}
+	
+	@GetMapping("/retrieveassets")
+	public String retrieveAssets(@ModelAttribute("Employee")Employee emp,RedirectAttributes attr)
+	{
+		
+		
+		return "";
 	}
 	
 }

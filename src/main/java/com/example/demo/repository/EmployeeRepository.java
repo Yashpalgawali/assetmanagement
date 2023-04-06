@@ -17,6 +17,8 @@ public interface EmployeeRepository {
 	
 	public List<Employee> getEmployeeHistoryByEmpId(String empid);
 	
+	public List<Employee> getEmployeeAssignAssetsByEmpId(String empid);
+	
 	public int updateEmployee(Employee emp);
 	
 	public Long getLastSavedEmployeeId();

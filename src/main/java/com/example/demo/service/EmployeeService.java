@@ -14,6 +14,8 @@ public interface EmployeeService {
 	
 	public List<Employee> getEmployeeByEmpId(String empid);
 	
+	public List<Employee> getEmployeeAssignAssetsByEmpId(String empid);
+	
 	public int updateEmployee(Employee emp);
 	
 	public Long getLastSavedEmployeeId();

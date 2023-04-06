@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +24,39 @@ public class AssetmanagementNoJpaApplication {
 		SpringApplication.run(AssetmanagementNoJpaApplication.class, args);
 		
 		
+		
+//		int[] a={1,5,3,4,8};
+//		int[] b={4,5};
+//		int[] c= new int[a.length];
+//		
+//		int[] d= new int[b.length];
+//		
+//		System.err.println("Inside Assetmanagement No JPA\n");
+//		for(int i=0;i<a.length;i++)
+//		{
+//		  for(int j=0;j<b.length;j++)
+//		  {
+//		    if(a[i] == b[j])
+//		    {
+//		    	 d[j] = b[j];
+//		    }
+//		    else
+//		    {
+//		    	c[i] = a[i];
+//		    }
+//		  }
+//		} 
+//		
+//		for(int i=0;i<d.length;i++)
+//		{
+//			System.out.println("Matching->> "+d[i]);
+//		}
+//		
+//		for(int i=0;i<c.length;i++)
+//		{
+//			System.err.println("Not Matching->> "+c[i]);
+//		}
+	
 //		List<Integer> ilist = new ArrayList<>();
 //		
 //		ilist.add(100);

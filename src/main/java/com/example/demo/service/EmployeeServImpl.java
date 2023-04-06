@@ -50,4 +50,10 @@ public class EmployeeServImpl implements EmployeeService {
 		return emprepo.getEmployeeByEmpId(empid);
 	}
 
+	@Override
+	public List<Employee> getEmployeeAssignAssetsByEmpId(String empid) {
+		// TODO Auto-generated method stub
+		return emprepo.getEmployeeAssignAssetsByEmpId(empid);
+	}
+
 }

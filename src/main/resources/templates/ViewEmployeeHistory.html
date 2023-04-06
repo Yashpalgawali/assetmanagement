@@ -54,7 +54,7 @@
 									</a>
 								</li>
 								<li class="breadcrumb-item active" aria-current="page">
-									Add Company
+									View History
 								</li>
 								
 							</ol>
@@ -91,7 +91,9 @@
 				    <thead>
 		                   <tr>
 		                        <th>Sr</th>
-		                       	<th>Asset(s)</th>
+		                       	<th>Asset</th>
+		                       	<th>Model Number</th>
+		                       	<th>Asset Type</th>
 		                       	<th>Operation Date Time</th>
 		                     	<th>Operation</th>
 		                   </tr>
@@ -100,6 +102,8 @@
 		                   <tr th:each="hist : ${ahist}">
 		                       	<td th:text="${histStat.count}"></td>
 		                       	<td th:text="${hist.asset.asset_name}"></td>
+		                       	<td th:text="${hist.asset.model_number}"></td>
+		                       	<td th:text="${hist.astype.type_name}"></td>
 		                       	<td th:text="|${hist.operation_date} ${hist.operation_time}|"></td>
 		                       	<td th:text="${hist.operation}"></td>
 		                   </tr>
