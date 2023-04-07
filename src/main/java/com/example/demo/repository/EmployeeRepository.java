@@ -15,6 +15,8 @@ public interface EmployeeRepository {
 	
 	public List<Employee> getEmployeeByEmpId(String empid);
 	
+	public List<Employee> getAllAssignedAssetsEmployees();
+	
 	public List<Employee> getEmployeeHistoryByEmpId(String empid);
 	
 	public List<Employee> getEmployeeAssignAssetsByEmpId(String empid);
@@ -22,5 +24,7 @@ public interface EmployeeRepository {
 	public int updateEmployee(Employee emp);
 	
 	public Long getLastSavedEmployeeId();
+	
+	public boolean isEmployeeExists(String empid);
 	
 }

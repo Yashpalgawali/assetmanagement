@@ -11,6 +11,6 @@ public interface AssignedAssetsRepo {
 	
 	public List<AssignedAssets> getAllAssignedAssetsByEmpId(String empid);
 	
-	
+	public int deleteAssignedAssetByEmpAndAssetId(int asset_id, Long emp_id);
 	
 }

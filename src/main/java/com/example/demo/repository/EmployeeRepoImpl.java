@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.models.Asset;
 import com.example.demo.models.AssetAssignHistory;
 import com.example.demo.models.AssetType;
+import com.example.demo.models.AssignedAssets;
 import com.example.demo.models.Company;
 import com.example.demo.models.Department;
 import com.example.demo.models.Designation;
@@ -395,5 +396,74 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				return emp;
 			}
 	 });
+	}
+
+	@Override
+	public List<Employee> getAllAssignedAssetsEmployees() {
+		// TODO Auto-generated method stub
+		return temp.query("SELECT *,GROUP_CONCAT(tbl_assettype.type_name),GROUP_CONCAT(tbl_asset.asset_name),GROUP_CONCAT(tbl_asset.model_number),GROUP_CONCAT(tbl_asset.asset_number) Assigned_Assets from tbl_employee JOIN tbl_assigned_assets ON tbl_employee.emp_id=tbl_assigned_assets.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id", new RowMapper<Employee>() {
+
+			@Override
+			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+				// TODO Auto-generated method stub
+				
+				Employee emp = new Employee();
+				
+				emp.setEmp_id(rs.getLong(1));
+				emp.setEmp_name(rs.getString(2));
+				emp.setEmp_email(rs.getString(3));
+				emp.setEmp_contact(rs.getString(4));
+				emp.setDept_id(rs.getLong(5));
+				emp.setDesig_id(rs.getLong(6));
+				
+				
+				AssignedAssets assigned = new AssignedAssets();
+				
+				assigned.setAssigned_asset_id(rs.getLong(7));
+				assigned.setEmp_id(rs.getLong(8));
+				assigned.setAssign_date(rs.getString(10));
+				assigned.setAssign_time(rs.getString(11));
+				
+				emp.setAssignedassets(assigned);
+				
+				Department dept = new Department();
+				dept.setDept_id(rs.getLong(19));
+				dept.setDept_name(rs.getString(20));
+				dept.setComp_id(rs.getLong(21));
+				
+				emp.setDepartment(dept);
+				
+				Company comp = new Company();
+				comp.setComp_id(rs.getLong(22));
+				comp.setComp_name(rs.getString(23));
+				
+				emp.setCompany(comp);
+				
+				emp.setAsset_types(rs.getString(24));
+				emp.setAsset_names(rs.getString(25));
+				
+				emp.setModel_numbers(rs.getString(26));
+				
+				return emp;
+			}
+			
+		});
+	}
+
+	@Override
+	public boolean isEmployeeExists(String empid) {
+		// TODO Auto-generated method stub
+		
+		int res = temp.queryForObject("SELECT COUNT(emp_id) FROM tbl_employee WHERE emp_id='"+empid+"'", Integer.class);
+		
+		if(res > 0)
+		{
+			return true;
+		}
+		else {
+		
+			return false;
+		}
+		
 	}
 }

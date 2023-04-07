@@ -96,4 +96,20 @@ public class AssignedAssetsRepoImpl implements AssignedAssetsRepo {
 		});
 	}
 
+	@Override
+	public int deleteAssignedAssetByEmpAndAssetId(int asset_id, Long emp_id) {
+		// TODO Auto-generated method stub
+		return temp.update("DELETE FROM tbl_assigned_assets WHERE emp_id=? AND asset_id=?", new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				// TODO Auto-generated method stub
+				
+				
+				ps.setLong(1, emp_id);
+				ps.setInt(2, asset_id);
+			}
+		});
+	}
+
 }

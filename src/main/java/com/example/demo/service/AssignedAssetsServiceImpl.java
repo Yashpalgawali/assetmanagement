@@ -27,4 +27,10 @@ public class AssignedAssetsServiceImpl implements AssignedAssetsService {
 		return assetrepo.getAllAssignedAssetsByEmpId(empid);
 	}
 
+	@Override
+	public int deleteAssignedAssetByEmpAndAssetId(int asset_id, Long emp_id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

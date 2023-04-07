@@ -30,7 +30,28 @@ public class Employee {
 	
 	private AssetAssignHistory ahist;
 	
+	private AssignedAssets assignedassets;
 	
+	private String model_numbers;
+	
+	
+	
+	public String getModel_numbers() {
+		return model_numbers;
+	}
+
+	public void setModel_numbers(String model_numbers) {
+		this.model_numbers = model_numbers;
+	}
+
+	public AssignedAssets getAssignedassets() {
+		return assignedassets;
+	}
+
+	public void setAssignedassets(AssignedAssets assignedassets) {
+		this.assignedassets = assignedassets;
+	}
+
 	public AssetAssignHistory getAhist() {
 		return ahist;
 	}
@@ -213,9 +234,11 @@ public class Employee {
 		return "Employee [emp_id=" + emp_id + ", emp_name=" + emp_name + ", emp_email=" + emp_email + ", emp_contact="
 				+ emp_contact + ", dept_id=" + dept_id + ", asset_id=" + asset_id + ", multi_assets=" + multi_assets
 				+ ", emp_code=" + emp_code + ", asset_names=" + asset_names + ", asset_types=" + asset_types
-				+ ", department=" + department + ", emp_codes=" + emp_codes + ", assettype=" + assettype + ", ahist="
-				+ ahist + ", asset=" + asset + ", type_id=" + type_id + ", company=" + company + ", comp_id=" + comp_id
-				+ ", designation=" + designation + ", desig_id=" + desig_id + "]";
+				+ ", emp_codes=" + emp_codes + ", assettype=" + assettype + ", department=" + department + ", ahist="
+				+ ahist + ", assignedassets=" + assignedassets + ", model_numbers=" + model_numbers + ", asset=" + asset
+				+ ", type_id=" + type_id + ", company=" + company + ", comp_id=" + comp_id + ", designation="
+				+ designation + ", desig_id=" + desig_id + "]";
 	}
+
 
 }

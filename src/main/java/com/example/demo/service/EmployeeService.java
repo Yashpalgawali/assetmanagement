@@ -10,6 +10,8 @@ public interface EmployeeService {
 	
 	public List<Employee> getAllEMployees();
 	
+	public List<Employee> getAllAssignedAssetsEmployees();
+	
 	public List<Employee> getEmployeeById(String id);
 	
 	public List<Employee> getEmployeeByEmpId(String empid);
@@ -19,5 +21,7 @@ public interface EmployeeService {
 	public int updateEmployee(Employee emp);
 	
 	public Long getLastSavedEmployeeId();
+	
+	public int updateRetrieveAssets(Employee emp);
 	
 }
