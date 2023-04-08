@@ -23,8 +23,6 @@ public class AssetmanagementNoJpaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AssetmanagementNoJpaApplication.class, args);
 		
-		
-		
 //		int[] a={1,5,3,4,8};
 //		int[] b={4,5};
 //		int[] c= new int[a.length];

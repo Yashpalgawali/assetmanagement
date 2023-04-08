@@ -103,7 +103,6 @@ public class EmployeeController {
 	}
 	
 	
-	
 	@RequestMapping("/saveassignasset")
 	public String saveEmployee(@ModelAttribute("Employee")Employee empl,HttpSession sess, RedirectAttributes attr)
 	{
@@ -115,7 +114,6 @@ public class EmployeeController {
 		
 		res = empserv.saveEmployee(empl);
 		
-		
 		if(res > 0)
 		{
 		for(int i=0;i<chararr.length;i++)
@@ -126,15 +124,11 @@ public class EmployeeController {
 				
 				asid = Character.getNumericValue(chararr[i]);
 				
-				System.err.println("Inside emp controller \n character value ->> "+chararr[i]+"\nNumneric value is ->> "+asid+"\n");
-				//empl.setMulti_assets(String.valueOf(asid));
-				
 				empl.setAsset_id((long)asid);
 				
 				today = LocalDateTime.now();
 				
 				Long lastemp = empserv.getLastSavedEmployeeId();
-				
 				
 				AssetAssignHistory ahist = new AssetAssignHistory();
 				
@@ -240,49 +234,62 @@ public class EmployeeController {
 	{
 		String multi_asset_id = empl.getMulti_assets();
 		
-		String emp_codes = empl.getEmp_codes();
-		
-		String emcode = ""+emp_codes.charAt(0);
-		
-		Long ecde = Long.valueOf(emcode);
-		
-		int res = 0;
+		int res = 0,rhist=0;
 		
 		char[] chararr = multi_asset_id.toCharArray();
+		
+		boolean result ;
 		
 		for(int i=0;i<chararr.length;i++)
 		{
 			if(Character.isDigit(chararr[i]))
 			{
-				empl.setMulti_assets(String.valueOf(chararr[i]));
-				empl.setEmp_code(ecde);
+				int asid = 0;
 				
-				res = empserv.updateEmployee(empl);
+				asid = Character.getNumericValue(chararr[i]);
 				
-				if(res>0)
+				result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);
+				if(!result)
 				{
-					AssetAssignHistory ahist = new AssetAssignHistory();
-					ahist.setAsset_id((long) Character.getNumericValue(chararr[i]));
+					empl.setAsset_id((long)asid);
 				
-					ahist.setOperation_date(tday);
-					ahist.setOperation_time(ttime);
-					ahist.setOperation("Asset Updated");
-					ahist.setEmp_code(ecde);
+					today = LocalDateTime.now();
 					
-					assetassignserv.saveAssignAssetHistory(ahist);
+					Long lastemp = empserv.getLastSavedEmployeeId();
+					
+					AssetAssignHistory ahist = new AssetAssignHistory();
+					
+						ahist.setAsset_id((long)asid);
+						ahist.setOperation_date(tday);
+						ahist.setOperation_time(ttime);
+						ahist.setOperation("Asset Updated");
+						ahist.setEmp_id(lastemp);
+						
+						
+					AssignedAssets assts = new AssignedAssets();
+						
+						assts.setEmp_id(lastemp);
+						assts.setAsset_id((long)asid);
+						assts.setAssign_date(tday);
+						assts.setAssign_time(ttime);
+						
+					res  =	assignedassetserv.saveAssignedAssets(assts);
+					
+					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 				}
 			}
-		}
+		  }
 		
 		if(res > 0)
 		{
 			attr.addFlashAttribute("response", "Assigned assets updated successfully");
-			return "redirect:/viewemployees";
+			return "redirect:/viewassignedassets";
 		}
 		else {
 			attr.addFlashAttribute("reserr", "Assigned assets are not updated ");
-			return "redirect:/viewemployees";
+			return "redirect:/viewassignedassets";
 		}
+		
 	}
 	
 	@GetMapping("/viewallemployees")
@@ -297,7 +304,6 @@ public class EmployeeController {
 	public String viewEmpHistoryByEmpId(@PathVariable("id") String id,Model model,RedirectAttributes attr)
 	{
 		List<Employee> emp = empserv.getEmployeeByEmpId(id);
-		
 		
 		Employee empl = null;
 		if(emp!=null)
@@ -354,7 +360,7 @@ public class EmployeeController {
 		
 	}
 	
-	@PostMapping("/updateretrieveassets")@ResponseBody
+	@PostMapping("/updateretrieveassets")
 	public String updateRetrieveAssets(@ModelAttribute("Employee")Employee empl,RedirectAttributes attr)
 	{
 		int res = empserv.updateRetrieveAssets(empl);

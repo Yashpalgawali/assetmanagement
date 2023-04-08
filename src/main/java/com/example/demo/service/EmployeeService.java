@@ -24,4 +24,5 @@ public interface EmployeeService {
 	
 	public int updateRetrieveAssets(Employee emp);
 	
+	public boolean isAssetAssigned(Long empid,Long assetid);
 }

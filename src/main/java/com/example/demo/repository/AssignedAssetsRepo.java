@@ -13,4 +13,5 @@ public interface AssignedAssetsRepo {
 	
 	public int deleteAssignedAssetByEmpAndAssetId(int asset_id, Long emp_id);
 	
+
 }

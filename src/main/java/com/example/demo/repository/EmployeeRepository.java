@@ -27,4 +27,6 @@ public interface EmployeeRepository {
 	
 	public boolean isEmployeeExists(String empid);
 	
+	public boolean isAssetAssigned(Long empid,Long assetid);
+	
 }

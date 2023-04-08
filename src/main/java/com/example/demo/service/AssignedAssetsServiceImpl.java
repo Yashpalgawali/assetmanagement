@@ -33,4 +33,5 @@ public class AssignedAssetsServiceImpl implements AssignedAssetsService {
 		return 0;
 	}
 
+	
 }

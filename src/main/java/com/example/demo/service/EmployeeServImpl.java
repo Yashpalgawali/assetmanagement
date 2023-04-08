@@ -124,4 +124,11 @@ public class EmployeeServImpl implements EmployeeService {
 		return res;
 	}
 
+	@Override
+	public boolean isAssetAssigned(Long empid,Long assetid) {
+		// TODO Auto-generated method stub
+		
+		return emprepo.isAssetAssigned(empid, assetid);
+	}
+
 }

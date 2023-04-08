@@ -11,5 +11,6 @@ public int saveAssignedAssets(AssignedAssets assets);
 	public List<AssignedAssets> getAllAssignedAssetsByEmpId(String empid);
 	
 	public int deleteAssignedAssetByEmpAndAssetId(int asset_id,Long emp_id);
+
 	
 }
