@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.models.AssetAssignHistory;
 import com.example.demo.models.Employee;
 import com.example.demo.repository.AssetAssignHistoryRepo;
+import com.example.demo.repository.AssetRepo;
 import com.example.demo.repository.AssignedAssetsRepo;
 import com.example.demo.repository.EmployeeRepository;
 
@@ -24,6 +25,9 @@ public class EmployeeServImpl implements EmployeeService {
 	
 	@Autowired
 	AssetAssignHistoryRepo histrepo;
+	
+	@Autowired
+	AssetRepo assetrepo;
 	
 	private LocalDateTime today;
 	
@@ -115,6 +119,8 @@ public class EmployeeServImpl implements EmployeeService {
 					hist.setOperation_time(ttime);
 					hist.setOperation("Asset Retrieved");
 					hist.setEmp_id(emp.getEmp_id());
+					
+					assetrepo.updateAssetQuantityByAssetId((long)asset_id, ""+1);
 					
 					histrepo.saveAssignAssetHistory(hist);
 				}

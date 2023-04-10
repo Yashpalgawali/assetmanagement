@@ -29,4 +29,6 @@ public interface EmployeeRepository {
 	
 	public boolean isAssetAssigned(Long empid,Long assetid);
 	
+	
+	
 }

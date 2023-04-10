@@ -108,7 +108,7 @@ public class EmployeeController {
 	{
 		String multi_asset_id = empl.getMulti_assets();
 		
-		int res =0,rhist=0 ;
+		int res =0,rhist=0,result=0 ;
 		
 		char[] chararr = multi_asset_id.toCharArray();
 		
@@ -140,12 +140,24 @@ public class EmployeeController {
 					
 					
 				AssignedAssets assts = new AssignedAssets();
+				
 					assts.setEmp_id(lastemp);
 					assts.setAsset_id((long)asid);
 					assts.setAssign_date(tday);
 					assts.setAssign_time(ttime);
 					
-					assignedassetserv.saveAssignedAssets(assts);
+					result = assignedassetserv.saveAssignedAssets(assts);
+					
+					if(result > 0)
+					{
+						int qty = asservice.getAssetQuantity((long) asid);
+						
+						qty-=1;
+						
+						String qtyop = String.valueOf((qty));
+						
+						asservice.updateAssetQuantityByAssetId((long)asid, qtyop);
+					}
 					
 					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 			}
@@ -218,6 +230,8 @@ public class EmployeeController {
 			List<String> assignedassetlist = List.of(empl.getAsset_names().split(","));
 			
 			model.addAttribute("assignedlist", assignedassetlist);
+			//model.addAttribute("assignedlist", empl.getAsset_names());
+			
 			//System.err.println("\n Assigned asset id Is ->> "+empl.toString()+"\n");
 			
 			return "EditEmployee";

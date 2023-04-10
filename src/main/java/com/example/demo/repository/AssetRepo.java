@@ -14,4 +14,8 @@ public int saveAsset(Asset asset);
 	
 	public int updateAssetById(Asset ast); 
 	
+	public int getAssetQuantity(Long assetid);
+	
+	public int updateAssetQuantityByAssetId(Long asid,String qty);
+	
 }

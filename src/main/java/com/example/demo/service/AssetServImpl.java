@@ -37,7 +37,37 @@ public class AssetServImpl implements AssetService {
 		// TODO Auto-generated method stub
 		return assetrepo.updateAssetById(ast);
 	}
-	
+
+	@Override
+	public int getAssetQuantity(Long assetid) {
+		// TODO Auto-generated method stub
+		
+		List<Asset> ast = assetrepo.getAssetById(String.valueOf(assetid));
+		if(ast.size()>0)
+		{
+			return assetrepo.getAssetQuantity(assetid);
+		}
+		else {
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public int updateAssetQuantityByAssetId(Long asid, String qty) {
+		// TODO Auto-generated method stub
+		
+		System.err.println("Inside updateAssetQuantityByAssetId service\n");
+		
+		List<Asset> ast = assetrepo.getAssetById(String.valueOf(asid));
+		if(ast.size()>0)
+		{
+			return assetrepo.updateAssetQuantityByAssetId(asid, qty);
+		}
+		else {
+			return 0;
+		}
+	}
 	
 
 }

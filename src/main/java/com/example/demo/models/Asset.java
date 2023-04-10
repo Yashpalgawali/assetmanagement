@@ -17,7 +17,15 @@ public class Asset {
 	
 	private Long type_id;
 	
+	private String quantity;
 	
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
 
 	public Long getType_id() {
 		return type_id;
@@ -70,9 +78,8 @@ public class Asset {
 	@Override
 	public String toString() {
 		return "Asset [asset_id=" + asset_id + ", asset_name=" + asset_name + ", asset_number=" + asset_number
-				+ ", model_number=" + model_number + ", assettype=" + assettype + ", type_id=" + type_id + "]";
+				+ ", model_number=" + model_number + ", assettype=" + assettype + ", type_id=" + type_id + ", quantity="
+				+ quantity + "]";
 	}
-	
-	
 	
 }

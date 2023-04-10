@@ -50,7 +50,7 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	@Override
 	public List<Employee> getAllEMployees() {
 		// TODO Auto-generated method stub
-		return temp.query("SELECT *,GROUP_CONCAT(tbl_asset.asset_name)asset_names,GROUP_CONCAT(tbl_assettype.type_name)asset_types FROM tbl_employee JOIN tbl_assigned_assets ON tbl_assigned_assets.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIn tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company  ON tbl_company.comp_id=tbl_department.comp_id", new RowMapper<>() {
+		return temp.query("SELECT *,GROUP_CONCAT(tbl_asset.asset_name)asset_names,GROUP_CONCAT(tbl_assettype.type_name)asset_types FROM tbl_employee JOIN tbl_assigned_assets ON tbl_assigned_assets.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIn tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company  ON tbl_company.comp_id=tbl_department.comp_id GROUP BY tbl_employee.emp_id", new RowMapper<>() {
 
 			@Override
 			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -65,7 +65,6 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				emp.setDept_id(rs.getLong(5));
 				emp.setDesig_id(rs.getLong(6));
 				
-				
 				AssignedAssets assigned = new AssignedAssets();
 				
 				assigned.setAssigned_asset_id(rs.getLong(7));
@@ -75,26 +74,26 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				
 				
 				Designation desig = new Designation();
-				desig.setDesig_id(rs.getLong(19));
-				desig.setDesig_name(rs.getString(20));
+				desig.setDesig_id(rs.getLong(20));
+				desig.setDesig_name(rs.getString(21));
 				
 				emp.setDesignation(desig);
 				
 				Department dept = new Department();
 				
-				dept.setDept_id(rs.getLong(21));
-				dept.setDept_name(rs.getString(22));
+				dept.setDept_id(rs.getLong(22));
+				dept.setDept_name(rs.getString(23));
 				
 				emp.setDepartment(dept);
 				
 				Company comp = new Company();
-				comp.setComp_id(rs.getLong(23));
-				comp.setComp_name(rs.getString(25));
+				comp.setComp_id(rs.getLong(24));
+				comp.setComp_name(rs.getString(26));
 				
 				emp.setCompany(comp);
 				
-				emp.setAsset_types(rs.getString(26));
-				emp.setAsset_names(rs.getString(27));
+				emp.setAsset_types(rs.getString(27));
+				emp.setAsset_names(rs.getString(28));
 				
 				
 				return emp;
@@ -118,7 +117,6 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				emp.setEmp_name(rs.getString(3));
 				emp.setEmp_email(rs.getString(4));
 				emp.setEmp_contact(rs.getString(5));
-				
 				
 				Asset asset = new Asset();
 				
@@ -153,7 +151,6 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				emp.setAsset_types(rs.getString(22));
 				return emp;
 			}
-			
 		});
 	}
 
@@ -325,7 +322,6 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				emp.setDept_id(rs.getLong(5));
 				emp.setDesig_id(rs.getLong(6));
 				
-				
 				AssignedAssets assigned = new AssignedAssets();
 				
 				assigned.setAssigned_asset_id(rs.getLong(7));
@@ -333,30 +329,27 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				assigned.setAssign_date(rs.getString(10));
 				assigned.setAssign_time(rs.getString(11));
 				
-				
-				
-				
 				Designation desig = new Designation();
-				desig.setDesig_id(rs.getLong(17));
-				desig.setDesig_name(rs.getString(18));
+				desig.setDesig_id(rs.getLong(18));
+				desig.setDesig_name(rs.getString(19));
 				
 				emp.setDesignation(desig);
 				
 				Department dept = new Department();
 				
-				dept.setDept_id(rs.getLong(19));
-				dept.setDept_name(rs.getString(20));
+				dept.setDept_id(rs.getLong(20));
+				dept.setDept_name(rs.getString(21));
 				
 				emp.setDepartment(dept);
 				
 				Company comp = new Company();
-				comp.setComp_id(rs.getLong(21));
-				comp.setComp_name(rs.getString(23));
+				comp.setComp_id(rs.getLong(22));
+				comp.setComp_name(rs.getString(24));
 				
 				emp.setCompany(comp);
 				
-				emp.setAsset_types(rs.getString(26));
-				emp.setAsset_names(rs.getString(27));
+				emp.setAsset_types(rs.getString(27));
+				emp.setAsset_names(rs.getString(28));
 				
 				
 				return emp;
@@ -367,7 +360,7 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	@Override
 	public List<Employee> getAllAssignedAssetsEmployees() {
 		// TODO Auto-generated method stub
-		return temp.query("SELECT *,GROUP_CONCAT(tbl_assettype.type_name),GROUP_CONCAT(tbl_asset.asset_name),GROUP_CONCAT(tbl_asset.model_number),GROUP_CONCAT(tbl_asset.asset_number) Assigned_Assets from tbl_employee JOIN tbl_assigned_assets ON tbl_employee.emp_id=tbl_assigned_assets.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id", new RowMapper<Employee>() {
+		return temp.query("SELECT *,GROUP_CONCAT(tbl_assettype.type_name),GROUP_CONCAT(tbl_asset.asset_name),GROUP_CONCAT(tbl_asset.model_number),GROUP_CONCAT(tbl_asset.asset_number) Assigned_Assets from tbl_employee JOIN tbl_assigned_assets ON tbl_employee.emp_id=tbl_assigned_assets.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id  GROUP BY tbl_employee.emp_id", new RowMapper<Employee>() {
 
 			@Override
 			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -393,22 +386,22 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				emp.setAssignedassets(assigned);
 				
 				Department dept = new Department();
-				dept.setDept_id(rs.getLong(19));
-				dept.setDept_name(rs.getString(20));
-				dept.setComp_id(rs.getLong(21));
+				dept.setDept_id(rs.getLong(20));
+				dept.setDept_name(rs.getString(21));
+				dept.setComp_id(rs.getLong(22));
 				
 				emp.setDepartment(dept);
 				
 				Company comp = new Company();
-				comp.setComp_id(rs.getLong(22));
-				comp.setComp_name(rs.getString(23));
+				comp.setComp_id(rs.getLong(23));
+				comp.setComp_name(rs.getString(24));
 				
 				emp.setCompany(comp);
 				
-				emp.setAsset_types(rs.getString(24));
-				emp.setAsset_names(rs.getString(25));
+				emp.setAsset_types(rs.getString(25));
+				emp.setAsset_names(rs.getString(26));
 				
-				emp.setModel_numbers(rs.getString(26));
+				emp.setModel_numbers(rs.getString(27));
 				
 				return emp;
 			}
@@ -422,22 +415,19 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 		
 		int res = temp.queryForObject("SELECT COUNT(emp_id) FROM tbl_employee WHERE emp_id='"+empid+"'", Integer.class);
 		
-		if(res > 0)
-		{
+		if(res > 0){
 			return true;
 		}
 		else {
-		
 			return false;
 		}
-		
 	}
 
 	@Override
 	public boolean isAssetAssigned(Long empid, Long assetid) {
 		// TODO Auto-generated method stub
 		
-		int res = temp.queryForObject("select COUNT(assigned_asset_id) FROM tbl_assigned_assets WHERE emp_id='"+empid+"' AND asset_id='"+assetid+"'", Integer.class);
+		int res = temp.queryForObject("SELECT COUNT(assigned_asset_id) FROM tbl_assigned_assets WHERE emp_id='"+empid+"' AND asset_id='"+assetid+"'", Integer.class);
 		if(res>0)
 		{
 			return true;
@@ -445,6 +435,6 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 		else {
 			return false;
 		}
-		
 	}
+
 }

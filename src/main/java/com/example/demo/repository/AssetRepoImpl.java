@@ -23,7 +23,7 @@ public class AssetRepoImpl implements AssetRepo {
 	@Override
 	public int saveAsset(Asset asset) {
 		// TODO Auto-generated method stub
-		return temp.update("INSERT INTO tbl_asset values('0',?,?,?,?)", new PreparedStatementSetter() {
+		return temp.update("INSERT INTO tbl_asset values('0',?,?,?,?,?)", new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
@@ -33,6 +33,7 @@ public class AssetRepoImpl implements AssetRepo {
 				ps.setLong(2, asset.getType_id());
 				ps.setString(3, asset.getAsset_number());
 				ps.setString(4, asset.getModel_number());
+				ps.setString(5, asset.getQuantity());
 			}
 		});
 	}
@@ -40,7 +41,7 @@ public class AssetRepoImpl implements AssetRepo {
 	@Override
 	public List<Asset> getAllAssets() {
 		// TODO Auto-generated method stub
-		return temp.query("select * from tbl_asset JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id", new RowMapper<Asset>() {
+		return temp.query("SELECT * FROM tbl_asset JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id", new RowMapper<Asset>() {
 
 			@Override
 			public Asset mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -51,11 +52,12 @@ public class AssetRepoImpl implements AssetRepo {
 				ast.setAsset_name(rs.getString(2));
 				ast.setAsset_number(rs.getString(4));
 				ast.setModel_number(rs.getString(5));
+				ast.setQuantity(rs.getString(6));
 				
 				AssetType atype = new AssetType();
 				
 				atype.setType_id(rs.getLong(3));
-				atype.setType_name(rs.getString(7));
+				atype.setType_name(rs.getString(8));
 				
 				ast.setAssettype(atype);
 				
@@ -79,11 +81,12 @@ public class AssetRepoImpl implements AssetRepo {
 				ast.setAsset_name(rs.getString(2));
 				ast.setAsset_number(rs.getString(4));
 				ast.setModel_number(rs.getString(5));
+				ast.setQuantity(rs.getString(6));
 				
 				AssetType atype =new AssetType();
 				
 				atype.setType_id(rs.getLong(6));
-				atype.setType_name(rs.getString(7));
+				atype.setType_name(rs.getString(8));
 				
 				ast.setAssettype(atype);
 				
@@ -107,6 +110,28 @@ public class AssetRepoImpl implements AssetRepo {
 				ps.setString(3, ast.getModel_number());
 				ps.setLong(4, ast.getType_id());
 				ps.setLong(5, ast.getAsset_id());
+			}
+		});
+	}
+
+	@Override
+	public int getAssetQuantity(Long assetid) {
+		// TODO Auto-generated method stub
+		return temp.queryForObject("SELECT quantity FROM tbl_asset WHERE asset_id='"+assetid+"'", Integer.class);
+	}
+
+	@Override
+	public int updateAssetQuantityByAssetId(Long asid,String qty) {
+		// TODO Auto-generated method stub
+		
+		return temp.update("UPDATE tbl_asset SET quantity=? WHERE asset_id=?", new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				// TODO Auto-generated method stub
+			
+				ps.setString(1, qty);
+				ps.setLong(2, asid);
 			}
 		});
 	}

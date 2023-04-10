@@ -28,7 +28,7 @@
   	  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.min.css"  />
   	
   
-<title>View Assets</title>
+<title>View Employees</title>
 
 <script>
 			$(document).ready(function(){
@@ -82,14 +82,13 @@
 					   <td th:text="${emp.department.dept_name}"></td>
 					   <td th:text="${emp.company.comp_name}"></td>
 					   
-      <td >
-      		<a th:href="@{/editempbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-edit fa-lg"></i>Edit</a>
-      		<a th:href="@{/retrieveassetsbyempid/{id}(id=${emp.emp_id})}" class="btn " ><i class="fa fa-edit fa-lg"></i>Retrieve</a>
-      		<a th:href="@{/viewemphistbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-eye fa-lg"></i> History</a>
-      </td>
-                   </tr>
-               </tbody>
-			
+		      <td>
+		      		<a th:href="@{/editempbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-edit fa-lg"></i>Edit</a>
+		      		<a th:href="@{/retrieveassetsbyempid/{id}(id=${emp.emp_id})}" class="btn " ><i class="fa fa-edit fa-lg"></i>Retrieve</a>
+		      		<a th:href="@{/viewemphistbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-eye fa-lg"></i> History</a>
+		      </td>
+            </tr>
+          </tbody>
 		</table>
 			
 	</div>

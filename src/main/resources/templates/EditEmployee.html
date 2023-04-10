@@ -39,19 +39,19 @@
 	
 	$(document).ready(function() {
 
-		$("#company").select2({
+		$("#comp_id").select2({
 			theme : 'classic',
 			width : 'resolve'
 
 		});
 
-		$("#department").select2({
+		$("#dept_id").select2({
 			theme : 'classic',
 			width : 'resolve'
 		});
 
 		$("#type_id").select2({
-		
+			theme: 'classic',
 			width : 'resolve',
 			placeholder : 'Please Select Asset Type',
 			allowClear : true
@@ -59,7 +59,7 @@
 		});
 
 		$("#multi_assets").select2({
-			
+			theme : 'classic',
 			width : 'resolve',
 			placeholder : 'Please Select Asset(s) ',
 			allowClear : true
@@ -152,7 +152,7 @@
 						</select>
 					</div>
 					
-					<div class="form-group  mb-3">
+					<div class="form-group  ">
 						<label for="multi_assets">Assets</label> 
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
 
