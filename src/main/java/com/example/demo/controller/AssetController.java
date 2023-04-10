@@ -2,14 +2,17 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.apache.el.parser.AstAssign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.models.Asset;
@@ -21,9 +24,6 @@ import com.example.demo.service.AssetTypeService;
 @Controller
 public class AssetController {
 
-//	@Autowired
-//	AssetService assetserv;
-//	
 	@Autowired
 	AssetTypeService assettypeserv; 
 	
@@ -34,7 +34,6 @@ public class AssetController {
 	public String addAsset(Model model)
 	{
 		List<AssetType> atypes = assettypeserv.getAllAssetTypes();
-		
 		model.addAttribute("alist", atypes);
 		
 		return "AddAsset";
@@ -65,20 +64,17 @@ public class AssetController {
 		return "ViewAssets";
 	}
 	
-	
-	
 	@RequestMapping("/editasset/{id}")
 	public String editAssetById(@PathVariable("id") String aid,Model model,RedirectAttributes attr)
 	{
 		List<Asset> asset = assetserv.getAssetById(aid);
 		
-		Asset ast =null;
+		Asset ast = null;
 		for(int i=0;i<asset.size();i++)
 		{
 			ast = asset.get(i);
 		}
 		
-		//Asset ast = assetserv.getAssetById(asid);
 		if(ast!=null)
 		{
 			List<AssetType> atype = assettypeserv.getAllAssetTypes();
@@ -95,7 +91,7 @@ public class AssetController {
 	}
 	
 	@RequestMapping("updateasset")
-	public String updateAssetById(@ModelAttribute("Asset") Asset asst,RedirectAttributes attr)
+	public String updateAssetById(@ModelAttribute("Asset") Asset asst,BindingResult br ,RedirectAttributes attr)
 	{
 		List<Asset> asset = assetserv.getAssetById(String.valueOf(asst.getAsset_id()));
 		
@@ -119,7 +115,6 @@ public class AssetController {
 			return "redirect:/viewassets";
 		}	
 	}
-	
 	
 	
 	@GetMapping("addassettype")
@@ -152,7 +147,6 @@ public class AssetController {
 		List<AssetType> ast = assettypeserv.getAllAssetTypes(); 
 		
 		model.addAttribute("aslist", ast);
-		
 		return "ViewAssetType";
 	}
 	
@@ -168,7 +162,6 @@ public class AssetController {
 		}
 		
 		model.addAttribute("types", atype);
-		
 		return "EditAssetType";	
 	}
 	

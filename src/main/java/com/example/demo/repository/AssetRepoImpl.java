@@ -69,37 +69,48 @@ public class AssetRepoImpl implements AssetRepo {
 	@Override
 	public List<Asset> getAssetById(String asid) {
 		// TODO Auto-generated method stub
-		return temp.query("SELECT * FROM tbl_asset JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id WHERE asset_id='"+asid+"'", new RowMapper<Asset>() {
+		
+		
+		 List<Asset> aslist = temp.query("SELECT * FROM tbl_asset JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id WHERE asset_id='"+asid+"'", new RowMapper<Asset>() {
 
-			@Override
-			public Asset mapRow(ResultSet rs, int rowNum) throws SQLException {
-				// TODO Auto-generated method stub
+				@Override
+				public Asset mapRow(ResultSet rs, int rowNum) throws SQLException {
+					// TODO Auto-generated method stub
+					
+					Asset ast = new Asset();
+					
+					ast.setAsset_id(rs.getLong(1));
+					ast.setAsset_name(rs.getString(2));
+					ast.setType_id(rs.getLong(3));
+					ast.setAsset_number(rs.getString(4));
+					ast.setModel_number(rs.getString(5));
+					ast.setQuantity(rs.getString(6));
+					
+					AssetType atype =new AssetType();
+					
+					atype.setType_id(rs.getLong(7));
+					atype.setType_name(rs.getString(8));
+					
+					ast.setAssettype(atype);
+					
+					return ast;
+				}
 				
-				Asset ast = new Asset();
-				
-				ast.setAsset_id(rs.getLong(1));
-				ast.setAsset_name(rs.getString(2));
-				ast.setAsset_number(rs.getString(4));
-				ast.setModel_number(rs.getString(5));
-				ast.setQuantity(rs.getString(6));
-				
-				AssetType atype =new AssetType();
-				
-				atype.setType_id(rs.getLong(6));
-				atype.setType_name(rs.getString(8));
-				
-				ast.setAssettype(atype);
-				
-				return ast;
-			}
-			
-		});
+			});
+		
+		 aslist.stream().forEach(e->System.err.println(e));
+		 
+		 
+		return aslist;
 	}
 
 	@Override
 	public int updateAssetById(Asset ast) {
 		// TODO Auto-generated method stub
-		return temp.update("UPDATE tbl_asset set asset_name=?,asset_number=?,model_number=?,type_id=? where asset_id=?", new PreparedStatementSetter() {
+		
+		System.err.println("inside update asset repo \n Asset ID->> "+ast.getAsset_id());
+		
+		return temp.update("UPDATE tbl_asset set asset_name=?,asset_number=?,model_number=?,type_id=?,quantity=? where asset_id=?", new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
@@ -109,7 +120,8 @@ public class AssetRepoImpl implements AssetRepo {
 				ps.setString(2, ast.getAsset_number());
 				ps.setString(3, ast.getModel_number());
 				ps.setLong(4, ast.getType_id());
-				ps.setLong(5, ast.getAsset_id());
+				ps.setString(5, ast.getQuantity());
+				ps.setLong(6, ast.getAsset_id());
 			}
 		});
 	}

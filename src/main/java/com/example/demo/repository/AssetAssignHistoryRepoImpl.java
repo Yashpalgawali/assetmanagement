@@ -149,33 +149,34 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				asset.setType_id(rs.getLong(15));
 				asset.setAsset_number(rs.getString(16));
 				asset.setModel_number(rs.getString(17));
+				asset.setQuantity(rs.getString(18));
 				
 				ahist.setAsset(asset);
 				
 				AssetType atype = new AssetType();
 				
-				atype.setType_id(rs.getLong(18));
-				atype.setType_name(rs.getString(19));
+				atype.setType_id(rs.getLong(19));
+				atype.setType_name(rs.getString(20));
 				
 				ahist.setAstype(atype);
 				
 				Designation desig = new Designation();
-				desig.setDesig_id(rs.getLong(20));
-				desig.setDesig_name(rs.getString(21));
+				desig.setDesig_id(rs.getLong(21));
+				desig.setDesig_name(rs.getString(22));
 				
 				ahist.setDesig(desig);
 				
 				Department dept = new Department();
 				
-				dept.setDept_id(rs.getLong(22));
-				dept.setDept_name(rs.getString(23));
+				dept.setDept_id(rs.getLong(23));
+				dept.setDept_name(rs.getString(24));
 				
 				ahist.setDept(dept);
 				
 				Company comp = new Company();
 				
-				comp.setComp_id(rs.getLong(24));
-				comp.setComp_name(rs.getString(26));
+				comp.setComp_id(rs.getLong(25));
+				comp.setComp_name(rs.getString(27));
 				
 				
 				ahist.setCompany(comp);
