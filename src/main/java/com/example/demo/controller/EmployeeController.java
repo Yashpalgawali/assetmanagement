@@ -193,60 +193,90 @@ public class EmployeeController {
 		return "ViewEmployees";
 	}
 	
-	@GetMapping("/editempbyempid/{id}")
+	@GetMapping("/editempassignassetbyempid/{id}")
 	public String editEmployeeById(@PathVariable("id")String id,Model model,RedirectAttributes attr)
 	{
 		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
-		Employee empl = null;
 		
-//		String emp_codes="";
-//		System.out.println("\nSize of List is -->> "+emp.size()+"\n");
+		Employee empl = null;
 		
 		for(int i=0;i<emp.size();i++)
 		{
 			empl = emp.get(i);
-//			emp_codes = empl.getEmp_id().toString();
 		}
-		
-		if(empl!=null)
-		{
-			List<Asset>  	 	aslist 		= asservice.getAllAssets();
-			List<Designation> 	desiglist 	= desigserv.getAllDesignations();
-			List<Department> 	dlist 		= deptserv.getAllDepartments();
-			List<AssetType>  	atypelist 	= atypeserv.getAllAssetTypes();
-			List<Company>    	clist 		= compserv.getAllCompanies();
-			
-			model.addAttribute("clist", 	clist);
-			model.addAttribute("atlist", 	atypelist);
-			model.addAttribute("aslist", 	aslist);
-			model.addAttribute("dlist", 	dlist);
-			model.addAttribute("desigserv", attr);
-			model.addAttribute("desiglist", desiglist);
-			model.addAttribute("emp", 		empl);
-
-			
-			// This will Convert the String into array of string 
-			String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
-			
-			Long[] strArray = new Long[string.length];
-			
-			for(int i=0;i<string.length;i++)
+			if(empl!=null)
 			{
-				strArray[i] = Long.valueOf(string[i]);
+				if(empl.getAsset_ids()!=null) 
+				{
+					List<Asset>  	 	aslist 		= asservice.getAllAssets();
+					List<Designation> 	desiglist 	= desigserv.getAllDesignations();
+					List<Department> 	dlist 		= deptserv.getAllDepartments();
+					List<AssetType>  	atypelist 	= atypeserv.getAllAssetTypes();
+					List<Company>    	clist 		= compserv.getAllCompanies();
+					
+					model.addAttribute("clist", 	clist);
+					model.addAttribute("atlist", 	atypelist);
+					model.addAttribute("aslist", 	aslist);
+					model.addAttribute("dlist", 	dlist);
+					model.addAttribute("desigserv", attr);
+					model.addAttribute("desiglist", desiglist);
+					model.addAttribute("emp", 		empl);
+					
+					// This will Convert the String into array of string 
+					String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
+					
+					Long[] strArray = new Long[string.length];
+					
+					for(int i=0;i<string.length;i++)
+					{
+						strArray[i] = Long.valueOf(string[i]);
+					}
+					model.addAttribute("assignedlist", strArray);
+					return "EditEmployee";
+				}
+				else
+				{
+					
+					emp = empserv.getEmployeeByEmpId(id);
+					
+					for(int i=0;i<emp.size();i++)
+					{
+						empl = emp.get(i);
+					}
+					
+					
+					List<Asset>  	 	aslist 		= asservice.getAllAssets();
+					List<Designation> 	desiglist 	= desigserv.getAllDesignations();
+					List<Department> 	dlist 		= deptserv.getAllDepartments();
+					List<AssetType>  	atypelist 	= atypeserv.getAllAssetTypes();
+					List<Company>    	clist 		= compserv.getAllCompanies();
+					
+					model.addAttribute("clist", 	clist);
+					model.addAttribute("atlist", 	atypelist);
+					model.addAttribute("aslist", 	aslist);
+					model.addAttribute("dlist", 	dlist);
+					model.addAttribute("desigserv", attr);
+					model.addAttribute("desiglist", desiglist);
+					model.addAttribute("emp", 		empl);
+					
+				
+					model.addAttribute("assignedlist", null);
+					return "EditEmployee";
+				}
 			}
-			model.addAttribute("assignedlist", strArray);
-			return "EditEmployee";
-		}
-		
+	
 		else {
 			attr.addFlashAttribute("reserr", "No Employee found for given Id");
 			return "redirect:/viewemployees";
 		}
+		
 	}
 	
 	@RequestMapping("/updateassignasset")
 	public String updateAssignedAssets(@ModelAttribute("Employee")Employee empl,HttpSession sess, RedirectAttributes attr)
 	{
+		
+		
 		String multi_asset_id = empl.getMulti_assets();
 		
 		int res = 0,rhist=0;
@@ -263,14 +293,14 @@ public class EmployeeController {
 				
 				asid = Character.getNumericValue(chararr[i]);
 				
-				result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);
-				if(!result)
+				result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);// 0 assign
+				if(result!=true)
 				{
 					empl.setAsset_id((long)asid);
 				
-					today = LocalDateTime.now();
+					//today = LocalDateTime.now();
 					
-					Long lastemp = empserv.getLastSavedEmployeeId();
+					//Long lastemp = empserv.getLastSavedEmployeeId();
 					
 					AssetAssignHistory ahist = new AssetAssignHistory();
 					
@@ -278,11 +308,11 @@ public class EmployeeController {
 						ahist.setOperation_date(tday);
 						ahist.setOperation_time(ttime);
 						ahist.setOperation("Asset Updated");
-						ahist.setEmp_id(lastemp);
+						ahist.setEmp_id(empl.getEmp_id());
 						
 					AssignedAssets assts = new AssignedAssets();
 						
-						assts.setEmp_id(lastemp);
+						assts.setEmp_id(empl.getEmp_id());
 						assts.setAsset_id((long)asid);
 						assts.setAssign_date(tday);
 						assts.setAssign_time(ttime);

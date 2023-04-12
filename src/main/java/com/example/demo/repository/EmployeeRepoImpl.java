@@ -309,7 +309,8 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 	@Override
 	public List<Employee> getEmployeeAssignAssetsByEmpId(String empid) {
 		// TODO Auto-generated method stub
-		return temp.query("SELECT *,GROUP_CONCAT(tbl_assettype.type_name)asset_types,GROUP_CONCAT(tbl_asset.asset_name)asset_names,GROUP_CONCAT(tbl_asset.asset_id)asset_ids from tbl_employee JOIN tbl_assigned_assets ON tbl_assigned_assets.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id joiN tbl_company ON tbl_company.comp_id=tbl_department.comp_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
+		
+		return temp.query("SELECT *,GROUP_CONCAT(tbl_assettype.type_name)asset_types,GROUP_CONCAT(tbl_asset.asset_name)asset_names,GROUP_CONCAT(tbl_asset.asset_id)asset_ids from tbl_employee JOIN tbl_assigned_assets ON tbl_assigned_assets.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_assigned_assets.asset_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id joiN tbl_company ON tbl_company.comp_id=tbl_department.comp_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<Employee>() {
 
 			@Override
 			public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -356,7 +357,7 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 				
 				return emp;
 			}
-	 });
+		});
 	}
 
 	@Override

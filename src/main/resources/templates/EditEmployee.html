@@ -138,15 +138,17 @@
 								<option selected disabled>Please Select Department</option>
 							</select>
 					</div>
-
-					<div class="form-group  mb-3">
-						<label for="asset_types">Assigned Asset(s) Type</label> 
-						 	<input type="text" id="asset_types" name="asset_types" th:value="${emp.asset_types}" class="form-control mb-3" readonly disabled="disabled" />
-					</div>
-					<div class="form-group  mb-3">
-						<label for="asset_names">Assigned Asset(s)</label> 
-						 	<input type="text" id="asset_names" name="asset_names" th:value="${emp.asset_names}" class="form-control mb-3" readonly disabled="disabled"/>
-					</div>
+					
+					<th:block th:if="${assignedlist}!=null">
+						<div class="form-group">
+							<label for="asset_types">Assigned Asset(s) Type</label> 
+							 	<input type="text" id="asset_types" name="asset_types" th:value="${emp.asset_types}" class="form-control mb-3" readonly disabled="disabled" />
+						</div>
+						<div class="form-group">
+							<label for="asset_names">Assigned Asset(s)</label> 
+							 	<input type="text" id="asset_names" name="asset_names" th:value="${emp.asset_names}" class="form-control mb-3" readonly disabled="disabled"/>
+						</div>
+					</th:block>
 					
 					<div class="form-group  mb-3">
 						<label for="type_id">Asset Type</label> 
@@ -157,7 +159,8 @@
 						</select>
 					</div>
 					
-					<div class="form-group  ">
+					<th:block th:if="${assignedlist}!=null">
+					  <div class="form-group">
 						<label for="multi_assets">Assets</label> 
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
 							
@@ -174,7 +177,26 @@
 									
 							</th:block>
 						</select>
-					</div>
+					  </div>
+					</th:block>
+					<th:block th:unless="${assignedlist}!=null">
+					  <div class="form-group">
+						<label for="multi_assets">Assets</label> 
+						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
+							
+								<th:block th:each="alst : ${aslist}"> 
+								   	<th:block th:if="${alst.quantity}>=1">
+										<option  th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
+									</th:block>
+									
+									<th:block th:unless="${alst.quantity}>=1">
+										<option disabled th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
+									</th:block>
+									
+								</th:block>
+						</select>
+					  </div>
+					</th:block>
 				<br>
 					<input type="submit" class="btn btn-primary" value="Submit" /> 
 					<input type="reset" class="btn btn-primary" value="RESET" />

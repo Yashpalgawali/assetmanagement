@@ -81,7 +81,7 @@
 					   <td th:text="${emp.department.dept_name}"></td>
 					   <td th:text="${emp.company.comp_name}"></td>
 		      <td>
-		      		<a th:href="@{/editempbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-edit fa-lg"></i>Edit</a>
+		      		<a th:href="@{/editempassignassetbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-edit fa-lg"></i>Edit</a>
 		      		<a th:href="@{/retrieveassetsbyempid/{id}(id=${emp.emp_id})}" class="btn " ><i class="fa fa-edit fa-lg"></i>Retrieve</a>
 		      		<a th:href="@{/viewemphistbyempid/{id}(id=${emp.emp_id})}" class="btn" ><i class="fa fa-eye fa-lg"></i> History</a>
 		      </td>

@@ -29,8 +29,6 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 	public int saveAssignAssetHistory(AssetAssignHistory hist) {
 		// TODO Auto-generated method stub
 		
-		System.err.println("Inside history repo \n Asset Id-->> "+hist.getAsset_id()+"\nCode->>> "+hist.getEmp_code());
-		
 		return temp.update("insert into tbl_asset_assign_history values('0',?,?,?,?,?)", new PreparedStatementSetter() {
 			
 			@Override
