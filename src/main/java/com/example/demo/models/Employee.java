@@ -34,8 +34,29 @@ public class Employee {
 	
 	private String model_numbers;
 	
+	private String asset_numbers;
+	
+	private String asset_ids;
 	
 	
+	
+	
+	public String getAsset_ids() {
+		return asset_ids;
+	}
+
+	public void setAsset_ids(String asset_ids) {
+		this.asset_ids = asset_ids;
+	}
+
+	public String getAsset_numbers() {
+		return asset_numbers;
+	}
+
+	public void setAsset_numbers(String asset_numbers) {
+		this.asset_numbers = asset_numbers;
+	}
+
 	public String getModel_numbers() {
 		return model_numbers;
 	}
@@ -235,10 +256,13 @@ public class Employee {
 				+ emp_contact + ", dept_id=" + dept_id + ", asset_id=" + asset_id + ", multi_assets=" + multi_assets
 				+ ", emp_code=" + emp_code + ", asset_names=" + asset_names + ", asset_types=" + asset_types
 				+ ", emp_codes=" + emp_codes + ", assettype=" + assettype + ", department=" + department + ", ahist="
-				+ ahist + ", assignedassets=" + assignedassets + ", model_numbers=" + model_numbers + ", asset=" + asset
-				+ ", type_id=" + type_id + ", company=" + company + ", comp_id=" + comp_id + ", designation="
-				+ designation + ", desig_id=" + desig_id + "]";
+				+ ahist + ", assignedassets=" + assignedassets + ", model_numbers=" + model_numbers + ", asset_numbers="
+				+ asset_numbers + ", asset_ids=" + asset_ids + ", asset=" + asset + ", type_id=" + type_id
+				+ ", company=" + company + ", comp_id=" + comp_id + ", designation=" + designation + ", desig_id="
+				+ desig_id + "]";
 	}
 
+	
 
+	
 }

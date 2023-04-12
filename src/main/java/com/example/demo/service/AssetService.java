@@ -17,5 +17,7 @@ public interface AssetService {
 	public int getAssetQuantity(Long assetid);
 	
 	public int updateAssetQuantityByAssetId(Long asid,String qty);
+	
+	public int getAssetIdByName(String asname);
 
 }

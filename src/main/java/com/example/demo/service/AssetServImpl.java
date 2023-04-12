@@ -57,8 +57,6 @@ public class AssetServImpl implements AssetService {
 	public int updateAssetQuantityByAssetId(Long asid, String qty) {
 		// TODO Auto-generated method stub
 		
-		System.err.println("Inside updateAssetQuantityByAssetId service\n");
-		
 		List<Asset> ast = assetrepo.getAssetById(String.valueOf(asid));
 		if(ast.size()>0)
 		{
@@ -68,6 +66,12 @@ public class AssetServImpl implements AssetService {
 			return 0;
 		}
 	}
-	
+
+	@Override
+	public int getAssetIdByName(String asname) {
+		// TODO Auto-generated method stub
+		
+		return 0;
+	}
 
 }

@@ -17,19 +17,15 @@
   <script>
   	$(document).ready(function(){
   		
-  		$('#assettype').select2({
+  		$('#type_id').select2({
   			theme : 'classic',
   			width : 'resolve'
   		});
   	});
   	
-//   	function callme(value)
-//   	{
-//   		alert(value);
-//   	}
-  
+
   </script>
-<title>Edit Company</title>
+<title>Edit Asset</title>
 </head>
 <body>
 		
@@ -48,8 +44,8 @@
 				<div class="card-body">
 				
 				   <div class="form-group">
-					 <label for="assettype">Select Asset Type</label>
-						<select class="form-control mb-3" id="assettype" name="assettype"  >
+					 <label for="type_id">Select Asset Type</label>
+						<select class="form-control mb-3" id="type_id" name="type_id"  >
 						   <option selected disabled > Please Select Asset Type </option>
 								<th:block th:each="atype : ${atype}">
 								  	<th:block th:if="${atype.type_id}==${asset.assettype.type_id}">

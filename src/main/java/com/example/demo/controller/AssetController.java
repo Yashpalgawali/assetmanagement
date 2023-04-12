@@ -93,6 +93,7 @@ public class AssetController {
 	@RequestMapping("updateasset")
 	public String updateAssetById(@ModelAttribute("Asset") Asset asst,BindingResult br ,RedirectAttributes attr)
 	{
+		
 		List<Asset> asset = assetserv.getAssetById(String.valueOf(asst.getAsset_id()));
 		
 		Asset asset_obj =null;
@@ -102,16 +103,23 @@ public class AssetController {
 		}
 		String ol_name = asset_obj.getAsset_name();
 		
-		int ast = assetserv.updateAssetById(asset_obj);
+		int ast = assetserv.updateAssetById(asst);
 		
 		if(ast > 0)
 		{
-			attr.addFlashAttribute("response", "Detail(s) of "+ol_name+" updated to "+asst.getAsset_name()+" successfully updated" );
-			return "redirect:/viewassets";
+			if(ol_name.equals(asst.getAsset_name())) 
+			{
+				attr.addFlashAttribute("response", "Detail(s) of "+ol_name+" Updated Successfully " );
+				return "redirect:/viewassets";
+			}
+			else {
+				attr.addFlashAttribute("response", "Detail(s) of "+ol_name+" updated to "+asst.getAsset_name()+"  Successfully" );
+				return "redirect:/viewassets";
+			}
 		}
 		else
 		{
-			attr.addFlashAttribute("reserr", "Detail(s) of "+ol_name+ " is not updated ");
+			attr.addFlashAttribute("reserr", "Detail(s) of "+ol_name+ " are not updated ");
 			return "redirect:/viewassets";
 		}	
 	}

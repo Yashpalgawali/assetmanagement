@@ -70,7 +70,6 @@ public class AssetRepoImpl implements AssetRepo {
 	public List<Asset> getAssetById(String asid) {
 		// TODO Auto-generated method stub
 		
-		
 		 List<Asset> aslist = temp.query("SELECT * FROM tbl_asset JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id WHERE asset_id='"+asid+"'", new RowMapper<Asset>() {
 
 				@Override
@@ -95,11 +94,7 @@ public class AssetRepoImpl implements AssetRepo {
 					
 					return ast;
 				}
-				
 			});
-		
-		 aslist.stream().forEach(e->System.err.println(e));
-		 
 		 
 		return aslist;
 	}
@@ -107,10 +102,10 @@ public class AssetRepoImpl implements AssetRepo {
 	@Override
 	public int updateAssetById(Asset ast) {
 		// TODO Auto-generated method stub
+	
+		System.err.println("QUANTITY --> "+ast.getQuantity());
 		
-		System.err.println("inside update asset repo \n Asset ID->> "+ast.getAsset_id());
-		
-		return temp.update("UPDATE tbl_asset set asset_name=?,asset_number=?,model_number=?,type_id=?,quantity=? where asset_id=?", new PreparedStatementSetter() {
+		return temp.update("UPDATE tbl_asset SET asset_name=?,asset_number=?,model_number=?,type_id=?,quantity=? WHERE asset_id=?", new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {

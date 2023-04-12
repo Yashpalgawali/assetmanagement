@@ -39,25 +39,6 @@
 	
 	$(document).ready(function() {
 
-		$("#company").select2({
-			theme : 'classic',
-			width : 'resolve'
-
-		});
-
-		$("#department").select2({
-			theme : 'classic',
-			width : 'resolve'
-		});
-
-		$("#type_id").select2({
-			theme : 'classic',
-			width : 'resolve',
-			placeholder : 'Please Select Asset Type',
-			allowClear : true
-
-		});
-
 		$("#multi_assets").select2({
 			
 			width 		: 'resolve',
@@ -84,14 +65,12 @@
 				</div>
 
 				<div class="card-body">
-
 					<input type="hidden" id="emp_id" name="emp_id" th:value="${emp.emp_id}"/>
 					
 					<div class="form-group">
 						<label for="emp_name">Employee Name</label>
 							<input class="form-control mb-3" type="text" id="emp_name" name="emp_name" th:value="${emp.emp_name}"  disabled required />
 					</div>
-
 
 					<div class="form-group  mb-3">
 						<label for="asset_types">Asset Type</label> 
@@ -103,7 +82,7 @@
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
 								<th:block th:each="alst : ${aslist}"> <!--  5  -->
 									<th:block th:each="astr : ${assignedlist}">  
-										<th:block th:if="${#arrays.contains(alst.asset_name, astr)}"> 
+										<th:block th:if="${#arrays.contains(alst.asset_id, astr)}"> 
 											<option selected th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
 										</th:block>
 										

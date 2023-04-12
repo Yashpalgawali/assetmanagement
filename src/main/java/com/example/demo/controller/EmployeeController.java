@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -99,6 +100,7 @@ public class EmployeeController {
 		model.addAttribute("dlist", dlist);
 		model.addAttribute("desigserv", attr);
 		model.addAttribute("desiglist", desiglist);
+		
 		return "AddEmployee";
 	}
 	
@@ -158,7 +160,6 @@ public class EmployeeController {
 						
 						asservice.updateAssetQuantityByAssetId((long)asid, qtyop);
 					}
-					
 					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 			}
 		  }
@@ -173,7 +174,6 @@ public class EmployeeController {
 			return "redirect:/viewassignedassets";
 		}
 	}
-	
 	
 	@GetMapping("/viewassignedassets")
 	public String viewAssignedAssets(Model model)
@@ -199,13 +199,13 @@ public class EmployeeController {
 		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
 		Employee empl = null;
 		
-		String emp_codes="";
-		System.out.println("\nSize of List is -->> "+emp.size()+"\n");
+//		String emp_codes="";
+//		System.out.println("\nSize of List is -->> "+emp.size()+"\n");
 		
 		for(int i=0;i<emp.size();i++)
 		{
 			empl = emp.get(i);
-			emp_codes = empl.getEmp_id().toString();
+//			emp_codes = empl.getEmp_id().toString();
 		}
 		
 		if(empl!=null)
@@ -223,17 +223,18 @@ public class EmployeeController {
 			model.addAttribute("desigserv", attr);
 			model.addAttribute("desiglist", desiglist);
 			model.addAttribute("emp", 		empl);
-			model.addAttribute("ecode", 	emp_codes);
+
 			
-		//	System.err.println("\n Assigned asset string is "+empl.getAsset_names());
+			// This will Convert the String into array of string 
+			String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
 			
-			List<String> assignedassetlist = List.of(empl.getAsset_names().split(","));
+			Long[] strArray = new Long[string.length];
 			
-			model.addAttribute("assignedlist", assignedassetlist);
-			//model.addAttribute("assignedlist", empl.getAsset_names());
-			
-			//System.err.println("\n Assigned asset id Is ->> "+empl.toString()+"\n");
-			
+			for(int i=0;i<string.length;i++)
+			{
+				strArray[i] = Long.valueOf(string[i]);
+			}
+			model.addAttribute("assignedlist", strArray);
 			return "EditEmployee";
 		}
 		
@@ -278,7 +279,6 @@ public class EmployeeController {
 						ahist.setOperation_time(ttime);
 						ahist.setOperation("Asset Updated");
 						ahist.setEmp_id(lastemp);
-						
 						
 					AssignedAssets assts = new AssignedAssets();
 						
@@ -345,7 +345,9 @@ public class EmployeeController {
 	public String retrieveAssetsByEmpId(@PathVariable String id,Model model,RedirectAttributes attr)
 	{
 		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
-
+		
+		StringBuilder asid = new StringBuilder();
+		
 		Employee empl = null;
 		for(int i=0;i<emp.size();i++)
 		{
@@ -354,15 +356,21 @@ public class EmployeeController {
 		
 		if(empl!=null)
 		{
-			List<Asset>  	 	aslist 		= asservice.getAllAssets();
-//			List<AssetType>  	atypelist 	= atypeserv.getAllAssetTypes();
-			List<String> assignedassetlist  = List.of(empl.getAsset_names().split(","));
+			List<Asset>  	aslist 	= asservice.getAllAssets();
 			
-//			model.addAttribute("atlist", 	atypelist);
+			// This will Convert the String into array of string 
+			String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
+			
+			Long[] strArray = new Long[string.length];
+			
+			for(int i=0;i<string.length;i++)
+			{
+				strArray[i] = Long.valueOf(string[i]);
+			}
+	
 			model.addAttribute("aslist", 	aslist);
-			
 			model.addAttribute("emp", 		empl);
-			model.addAttribute("assignedlist", assignedassetlist);
+			model.addAttribute("assignedlist", strArray);
 			
 			return "RetrieveAssets";
 		}
@@ -371,7 +379,6 @@ public class EmployeeController {
 			attr.addFlashAttribute("reserr", "No Employee found for given Id");
 			return "redirect:/viewemployees";
 		}
-		
 	}
 	
 	@PostMapping("/updateretrieveassets")

@@ -57,7 +57,7 @@
 		});
 
 		$("#type_id").select2({
-			theme: 'classic',
+			
 			width : 'resolve',
 			placeholder : 'Please Select Asset Type',
 			allowClear : true
@@ -65,7 +65,7 @@
 		});
 
 		$("#multi_assets").select2({
-			theme : 'classic',
+			
 			width : 'resolve',
 			placeholder : 'Please Select Asset(s) ',
 			allowClear : true
@@ -92,7 +92,6 @@
 				<div class="card-body">
 					
 					<input type="hidden" id="emp_id" name="emp_id" th:value="${emp.emp_id}"/>
-					<input type="hidden" id="emp_codes" name="emp_codes" th:value="${ecode}"/>
 					
 					<div class="form-group">
 						<label for="emp_name">Employee Name</label>
@@ -161,23 +160,22 @@
 					<div class="form-group  ">
 						<label for="multi_assets">Assets</label> 
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
-
+							
 							<th:block th:each="alst : ${aslist}"> <!--  5  -->
 									<th:block th:each="astr : ${assignedlist}">  
-										<th:block th:if="${#arrays.contains(alst.asset_name, astr)}"> 
+										<th:block th:if="${#arrays.contains(alst.asset_id, astr)}"> 
 											<option selected th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
 										</th:block>
 										
-										<th:block th:unless="${#arrays.contains(alst.asset_name, astr)}"> 
+										<th:block th:unless="${#arrays.contains(alst.asset_id, astr)}"> 
 											<option  th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option> 
 										</th:block> 
 									</th:block>
 									
 							</th:block>
-
 						</select>
 					</div>
-		<br>
+				<br>
 					<input type="submit" class="btn btn-primary" value="Submit" /> 
 					<input type="reset" class="btn btn-primary" value="RESET" />
 				</div>

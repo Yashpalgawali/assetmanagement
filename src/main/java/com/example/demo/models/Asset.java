@@ -19,6 +19,28 @@ public class Asset {
 	
 	private String quantity;
 	
+	private String model_numbers;
+	
+	private String asset_numbers;
+	
+	
+	
+	public String getAsset_numbers() {
+		return asset_numbers;
+	}
+
+	public void setAsset_numbers(String asset_numbers) {
+		this.asset_numbers = asset_numbers;
+	}
+
+	public String getModel_numbers() {
+		return model_numbers;
+	}
+
+	public void setModel_numbers(String model_numbers) {
+		this.model_numbers = model_numbers;
+	}
+
 	public String getQuantity() {
 		return quantity;
 	}
@@ -79,7 +101,9 @@ public class Asset {
 	public String toString() {
 		return "Asset [asset_id=" + asset_id + ", asset_name=" + asset_name + ", asset_number=" + asset_number
 				+ ", model_number=" + model_number + ", assettype=" + assettype + ", type_id=" + type_id + ", quantity="
-				+ quantity + "]";
+				+ quantity + ", model_numbers=" + model_numbers + ", asset_numbers=" + asset_numbers + "]";
 	}
+
+	
 	
 }
