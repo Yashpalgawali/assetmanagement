@@ -29,7 +29,7 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 	public int saveAssignAssetHistory(AssetAssignHistory hist) {
 		// TODO Auto-generated method stub
 		
-		return temp.update("insert into tbl_asset_assign_history values('0',?,?,?,?,?)", new PreparedStatementSetter() {
+		return temp.update("insert into tbl_asset_assign_history values('0',?,?,?,?,?,?)", new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
@@ -41,6 +41,7 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				ps.setString(3, hist.getOperation_time());
 				ps.setString(4, hist.getOperation());
 				ps.setLong(5, hist.getEmp_id());
+				ps.setString(6, hist.getComments());
 					
 			}
 		});
@@ -95,8 +96,6 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				atype.setType_id(rs.getLong(25));
 				atype.setType_name(rs.getString(26));
 				
-				
-				
 				hist.setAssigned_assets(rs.getString(27));
 				hist.setAssigned_asset_type(rs.getString(28));
 				
@@ -115,7 +114,8 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 	public List<AssetAssignHistory> getAssetAssignHistoryEmpId(String empid) {
 		// TODO Auto-generated method stub
 		
-		return temp.query(" SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
+//		return temp.query("SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"' ORDER BY tbl_asset_assign_history.operation_date ASC", new RowMapper<>() {
+		return temp.query("SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
 			@Override
 			public AssetAssignHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
@@ -128,45 +128,39 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				ahist.setOperation_time(rs.getString(4));
 				ahist.setOperation(rs.getString(5));
 				ahist.setEmp_id(rs.getLong(6));
+				ahist.setComments(rs.getString(7));
 				
 				Employee emp = new Employee();
 				
-				emp.setEmp_id(rs.getLong(7));
-				emp.setEmp_name(rs.getString(8));
-				emp.setEmp_email(rs.getString(9));
-				emp.setEmp_contact(rs.getString(10));
-				emp.setDept_id(rs.getLong(11));
-				emp.setDesig_id(rs.getLong(12));
+				emp.setEmp_id(rs.getLong(8));
+				emp.setEmp_name(rs.getString(9));
+				emp.setEmp_email(rs.getString(10));
+				emp.setEmp_contact(rs.getString(11));
+				emp.setDept_id(rs.getLong(12));
+				emp.setDesig_id(rs.getLong(13));
 				
 				ahist.setEmployee(emp);
 				
 				Asset asset = new Asset();
 				
-				asset.setAsset_id(rs.getLong(13));
-				asset.setAsset_name(rs.getString(14));
-				asset.setType_id(rs.getLong(15));
-				asset.setAsset_number(rs.getString(16));
-				asset.setModel_number(rs.getString(17));
-				asset.setQuantity(rs.getString(18));
+				asset.setAsset_id(rs.getLong(14));
+				asset.setAsset_name(rs.getString(15));
+				asset.setType_id(rs.getLong(16));
+				asset.setAsset_number(rs.getString(17));
+				asset.setModel_number(rs.getString(18));
+				asset.setQuantity(rs.getString(19));
 				
 				ahist.setAsset(asset);
 				
-				AssetType atype = new AssetType();
-				
-				atype.setType_id(rs.getLong(19));
-				atype.setType_name(rs.getString(20));
-				
-				ahist.setAstype(atype);
-				
 				Designation desig = new Designation();
-				desig.setDesig_id(rs.getLong(21));
-				desig.setDesig_name(rs.getString(22));
+				desig.setDesig_id(rs.getLong(20));
+				desig.setDesig_name(rs.getString(21));
 				
 				ahist.setDesig(desig);
 				
 				Department dept = new Department();
 				
-				dept.setDept_id(rs.getLong(23));
+				dept.setDept_id(rs.getLong(22));
 				dept.setDept_name(rs.getString(24));
 				
 				ahist.setDept(dept);
@@ -174,10 +168,36 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 				Company comp = new Company();
 				
 				comp.setComp_id(rs.getLong(25));
-				comp.setComp_name(rs.getString(27));
-				
+				comp.setComp_name(rs.getString(26));
 				
 				ahist.setCompany(comp);
+				
+//				AssetType atype = new AssetType();
+//				
+//				atype.setType_id(rs.getLong(20));
+//				atype.setType_name(rs.getString(21));
+//				
+//				ahist.setAstype(atype);
+				
+//				Designation desig = new Designation();
+//				desig.setDesig_id(rs.getLong(22));
+//				desig.setDesig_name(rs.getString(23));
+//				
+//				ahist.setDesig(desig);
+//				
+//				Department dept = new Department();
+//				
+//				dept.setDept_id(rs.getLong(24));
+//				dept.setDept_name(rs.getString(25));
+//				
+//				ahist.setDept(dept);
+//				
+//				Company comp = new Company();
+//				
+//				comp.setComp_id(rs.getLong(26));
+//				comp.setComp_name(rs.getString(28));
+//				
+//				ahist.setCompany(comp);
 				return ahist;
 			}
 	 });

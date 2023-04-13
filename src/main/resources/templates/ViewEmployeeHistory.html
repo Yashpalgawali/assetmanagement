@@ -26,7 +26,8 @@
 	$(document).ready(function(){
 		
 		$('#comptable').DataTable({
-			order : [4 , 'DESC']
+			"aaSorting": [] // This will disable initial sorting in Datatable
+			//"ordering": false 
 		});
 	});
 
@@ -72,8 +73,7 @@
 		<div class="mb-2" style="margin:10px 0 0 10px;">
 			
 			 	<h6 style="float:left;" >Employee Name : [[${emp.emp_name}]]</h6>
-			 
-			 <h6 style="float:right;margin-right:10px;">Department: [[${emp.department.dept_name}]]</h6>
+			 	<h6 style="float:right;margin-right:10px;">Department: [[${emp.department.dept_name}]]</h6>
 		</div>
 		
 		<div class="mb-2" style="margin:10px 0 0 10px;">
@@ -87,22 +87,27 @@
 				<table class="table table-striped table-hover" id="comptable">
 				    <thead>
 		                   <tr>
-		                        <th>Sr</th>
-		                       	<th>Asset Type</th>
+<!-- 		                        <th>Sr</th> -->
+<!-- 		                       	<th>Asset Type</th> -->
 		                       	<th>Asset</th>
 		                       	<th>Model Number</th>
-		                       	<th>Operation Date Time</th>
+		                       	<th>Operation Date </th>
+<!-- 		                       	<th>Time</th> -->
 		                     	<th>Operation</th>
+		                     	<th>Comment</th>
 		                   </tr>
 		               </thead>
 		               <tbody>
 		                   <tr th:each="hist : ${ahist}">
-		                       	<td th:text="${histStat.count}"></td>
-		                       	<td th:text="${hist.astype.type_name}"></td>
+<!-- 		                       	<td th:text="${histStat.count}"></td> -->
+<!-- 		                       	<td th:text="${hist.astype.type_name}"></td> -->
 		                       	<td th:text="${hist.asset.asset_name}"></td>
 		                       	<td th:text="${hist.asset.model_number}"></td>
 		                       	<td th:text="|${hist.operation_date} ${hist.operation_time}|"></td>
+<!-- 								<td th:text="${hist.operation_date}"></td> -->
+<!-- 								<td th:text="${hist.operation_time}"></td> -->
 		                       	<td th:text="${hist.operation}"></td>
+		                       	<td th:text="${hist.comments}"></td>
 		                   </tr>
 		              </tbody>
 			 </table>

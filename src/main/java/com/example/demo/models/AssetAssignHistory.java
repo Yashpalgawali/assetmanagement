@@ -31,8 +31,18 @@ public class AssetAssignHistory {
 	
 	private Designation desig;
 	
+	private String comments;
 	
 	
+	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
 	public Designation getDesig() {
 		return desig;
 	}

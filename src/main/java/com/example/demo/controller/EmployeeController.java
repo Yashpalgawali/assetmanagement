@@ -244,7 +244,6 @@ public class EmployeeController {
 						empl = emp.get(i);
 					}
 					
-					
 					List<Asset>  	 	aslist 		= asservice.getAllAssets();
 					List<Designation> 	desiglist 	= desigserv.getAllDesignations();
 					List<Department> 	dlist 		= deptserv.getAllDepartments();
@@ -275,8 +274,6 @@ public class EmployeeController {
 	@RequestMapping("/updateassignasset")
 	public String updateAssignedAssets(@ModelAttribute("Employee")Employee empl,HttpSession sess, RedirectAttributes attr)
 	{
-		
-		
 		String multi_asset_id = empl.getMulti_assets();
 		
 		int res = 0,rhist=0;
@@ -359,6 +356,7 @@ public class EmployeeController {
 	
 			List<AssetAssignHistory> ahist = histserv.getAssetAssignHistoryEmpId(id);
 			
+			
 			model.addAttribute("ahist", ahist);
 			model.addAttribute("emp", empl);
 			return "ViewEmployeeHistory";
@@ -376,7 +374,7 @@ public class EmployeeController {
 	{
 		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
 		
-		StringBuilder asid = new StringBuilder();
+		//StringBuilder asid = new StringBuilder();
 		
 		Employee empl = null;
 		for(int i=0;i<emp.size();i++)
@@ -386,23 +384,30 @@ public class EmployeeController {
 		
 		if(empl!=null)
 		{
-			List<Asset>  	aslist 	= asservice.getAllAssets();
-			
-			// This will Convert the String into array of string 
-			String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
-			
-			Long[] strArray = new Long[string.length];
-			
-			for(int i=0;i<string.length;i++)
+			if(empl.getAsset_ids()!=null)
 			{
-				strArray[i] = Long.valueOf(string[i]);
+				List<Asset>  	aslist 	= asservice.getAllAssets();
+				
+				// This will Convert the String into array of string 
+				String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
+				
+				Long[] strArray = new Long[string.length];
+				
+				for(int i=0;i<string.length;i++)
+				{
+					strArray[i] = Long.valueOf(string[i]);
+				}
+		
+				model.addAttribute("aslist", 	aslist);
+				model.addAttribute("emp", 		empl);
+				model.addAttribute("assignedlist", strArray);
+				
+				return "RetrieveAssets";
 			}
-	
-			model.addAttribute("aslist", 	aslist);
-			model.addAttribute("emp", 		empl);
-			model.addAttribute("assignedlist", strArray);
-			
-			return "RetrieveAssets";
+			else {
+				attr.addFlashAttribute("reserr", "No Asset(s) is assigned to the Employee");
+				return "redirect:/viewemployees";
+			}
 		}
 		else {
 		
