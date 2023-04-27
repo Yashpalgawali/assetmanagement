@@ -1,27 +1,22 @@
 package com.example.demo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.stream.Collectors;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.example.demo.models.Company;
-
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class AssetmanagementNoJpaApplication {
+public class AssetmanagementNoJpaApplication extends SpringBootServletInitializer{
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(AssetmanagementNoJpaApplication.class);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(AssetmanagementNoJpaApplication.class, args);
+		
 		
 //		int[] a={1,5,3,4,8};
 //		int[] b={4,5};
@@ -111,8 +106,7 @@ public class AssetmanagementNoJpaApplication {
 //		 comp.add(new Company((long) 1, "TCS"));
 //		 comp.add(new Company((long) 2, "BlackRock"));
 //		 comp.add(new Company((long) 3, "IBM"));
-//		  
-//		  
+ 
 //		 Collections.sort(comp , new NameComparator());
 //		  
 //		 List<String> cname = comp.stream().filter(cm -> cm.getComp_id()>=2).map(cm->cm.getComp_name()).collect(Collectors.toList());

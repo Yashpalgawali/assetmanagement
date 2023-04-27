@@ -83,6 +83,7 @@
 	<div class="container">
 
 		<form th:action="@{/updateassignasset}" method="post">
+<!-- 		<form th:action="@{/exampleupdateasset}" method="post"> -->
 			<div class="card">
 
 				<div class="card-header">
@@ -164,14 +165,19 @@
 						<label for="multi_assets">Assets</label> 
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
 							
-							<th:block th:each="alst : ${aslist}"> <!--  5  -->
-									<th:block th:each="astr : ${assignedlist}">  
-										<th:block th:if="${#arrays.contains(alst.asset_id, astr)}"> 
-											<option selected th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
+							<th:block th:each="alst : ${aslist}"> <!-- 1,2,3,4,5  -->
+									<th:block th:each="astr : ${assignedlist}">  <!-- 1,4,5  -->
+										<th:block th:if="${#arrays.contains(alst.asset_id, astr)}">
+												<option selected th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
 										</th:block>
 										
 										<th:block th:unless="${#arrays.contains(alst.asset_id, astr)}"> 
-											<option  th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option> 
+											<th:block th:if="${alst.quantity}>0">		
+												<option  th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option> 
+											</th:block>
+											<th:block th:unless="${alst.quantity}>0">		
+												<option  disabled th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option> 
+											</th:block>
 										</th:block> 
 									</th:block>
 									
@@ -185,11 +191,11 @@
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
 							
 								<th:block th:each="alst : ${aslist}"> 
-								   	<th:block th:if="${alst.quantity}>=1">
+								   	<th:block th:if="${alst.quantity}>0">
 										<option  th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
 									</th:block>
 									
-									<th:block th:unless="${alst.quantity}>=1">
+									<th:block th:unless="${alst.quantity}>0">
 										<option disabled th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
 									</th:block>
 									

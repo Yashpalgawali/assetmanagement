@@ -38,9 +38,16 @@ public class Employee {
 	
 	private String asset_ids;
 	
+	private String comments;
 	
-	
-	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
 	public String getAsset_ids() {
 		return asset_ids;
 	}

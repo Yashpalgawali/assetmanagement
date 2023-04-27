@@ -73,7 +73,6 @@ public class EmployeeServImpl implements EmployeeService {
 		// TODO Auto-generated method stub
 		
 		boolean res = emprepo.isEmployeeExists(empid);
-		
 		if(res)
 		{
 			return emprepo.getEmployeeByEmpId(empid);
@@ -81,7 +80,6 @@ public class EmployeeServImpl implements EmployeeService {
 		else {
 			return null;
 		}
-		
 	}
 
 	@Override
@@ -111,6 +109,9 @@ public class EmployeeServImpl implements EmployeeService {
 			if(Character.isDigit(ch[i]))
 			{
 				asset_id = Character.getNumericValue(ch[i]);
+				
+				long qty = assetrepo.getAssetQuantity((long)asset_id);
+				
 				res = assignedassetrepo.deleteAssignedAssetByEmpAndAssetId(asset_id, emp.getEmp_id());
 				if(res > 0)
 				{
@@ -120,8 +121,9 @@ public class EmployeeServImpl implements EmployeeService {
 					hist.setOperation_time(ttime);
 					hist.setOperation("Asset Retrieved");
 					hist.setEmp_id(emp.getEmp_id());
+					hist.setComments(emp.getComments());
 					
-					assetrepo.updateAssetQuantityByAssetId((long)asset_id, ""+1);
+					assetrepo.updateAssetQuantityByAssetId((long)asset_id, ""+(qty+1));
 					
 					histrepo.saveAssignAssetHistory(hist);
 				}

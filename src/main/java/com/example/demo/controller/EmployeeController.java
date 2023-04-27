@@ -70,6 +70,7 @@ public class EmployeeController {
 	
 	private LocalDateTime today;
 	
+	
 	//private DateTimeFormatter dformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
 	private DateTimeFormatter ddate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -82,6 +83,7 @@ public class EmployeeController {
 	public String addEmployee(Model model, HttpSession sess ,RedirectAttributes attr)
 	{
 		sess.removeAttribute("empcode");
+		
 //		System.out.println("Todays date time is -->> "+today.now() );
 //		
 //		System.out.println("Formatted Todays ONLY date  is -->> "+ ddate.format(today.now()) );
@@ -118,8 +120,8 @@ public class EmployeeController {
 		
 		if(res > 0)
 		{
-		for(int i=0;i<chararr.length;i++)
-		{
+		 for(int i=0;i<chararr.length;i++)
+		 {
 			if(Character.isDigit(chararr[i]))
 			{
 				int asid = 0;
@@ -135,18 +137,17 @@ public class EmployeeController {
 				AssetAssignHistory ahist = new AssetAssignHistory();
 				
 					ahist.setAsset_id((long)asid);
-					ahist.setOperation_date(tday);
-					ahist.setOperation_time(ttime);
+					ahist.setOperation_date(ddate.format(today.now()));
+					ahist.setOperation_time(dtime.format(today.now()));
 					ahist.setOperation("Asset Assigned");
 					ahist.setEmp_id(lastemp);
-					
 					
 				AssignedAssets assts = new AssignedAssets();
 				
 					assts.setEmp_id(lastemp);
 					assts.setAsset_id((long)asid);
-					assts.setAssign_date(tday);
-					assts.setAssign_time(ttime);
+					assts.setAssign_date(ddate.format(today.now()));
+					assts.setAssign_time(dtime.format(today.now()));
 					
 					result = assignedassetserv.saveAssignedAssets(assts);
 					
@@ -236,7 +237,6 @@ public class EmployeeController {
 				}
 				else
 				{
-					
 					emp = empserv.getEmployeeByEmpId(id);
 					
 					for(int i=0;i<emp.size();i++)
@@ -268,13 +268,38 @@ public class EmployeeController {
 			attr.addFlashAttribute("reserr", "No Employee found for given Id");
 			return "redirect:/viewemployees";
 		}
-		
 	}
+	
+	
+	@RequestMapping("/exampleupdateasset")
+	@ResponseBody
+	public String exampleupdateAssignedAssets(@ModelAttribute("Employee")Employee empl,HttpSession sess, RedirectAttributes attr)
+	{
+		String multi_asset_id = empl.getMulti_assets();
+		
+		int newassetassignlength = multi_asset_id.length();
+		
+		System.err.println("New assets Length is "+multi_asset_id.length());
+		
+		List<Employee> elist=  empserv.getEmployeeAssignAssetsByEmpId(""+empl.getEmp_id());
+		int assignassetid = elist.get(0).getAsset_ids().length();
+		
+		
+		return ""+multi_asset_id+"-----------------   From the list ->> "+elist.get(0).getAsset_ids()+"----------------Size is "+elist.get(0).getAsset_ids().length();
+	}
+		
 	
 	@RequestMapping("/updateassignasset")
 	public String updateAssignedAssets(@ModelAttribute("Employee")Employee empl,HttpSession sess, RedirectAttributes attr)
 	{
 		String multi_asset_id = empl.getMulti_assets();
+		
+		List<Employee> emplist = empserv.getEmployeeAssignAssetsByEmpId(""+empl.getEmp_id());
+		
+		int assignedassetlen = emplist.get(0).getAsset_ids().length();
+		int newassetassignlen = multi_asset_id.length();
+		
+		System.err.println("Assigned asset length is ---->>> "+assignedassetlen+"\n New assets length is "+newassetassignlen);
 		
 		int res = 0,rhist=0;
 		
@@ -282,23 +307,21 @@ public class EmployeeController {
 		
 		boolean result ;
 		
-		for(int i=0;i<chararr.length;i++)
-		{
+		if(newassetassignlen>=assignedassetlen)
+		{	
+		 for(int i=0;i<chararr.length;i++)
+		 {
 			if(Character.isDigit(chararr[i]))
 			{
 				int asid = 0;
 				
 				asid = Character.getNumericValue(chararr[i]);
 				
-				result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);// 0 assign
+				result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);
 				if(result!=true)
 				{
 					empl.setAsset_id((long)asid);
 				
-					//today = LocalDateTime.now();
-					
-					//Long lastemp = empserv.getLastSavedEmployeeId();
-					
 					AssetAssignHistory ahist = new AssetAssignHistory();
 					
 						ahist.setAsset_id((long)asid);
@@ -318,18 +341,24 @@ public class EmployeeController {
 					
 					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 				}
+			 }
+		   }
+		 	if(res > 0)
+			{
+				attr.addFlashAttribute("response", "Assigned assets updated successfully");
+				return "redirect:/viewassignedassets";
 			}
-		  }
-		
-		if(res > 0)
+			else {
+				attr.addFlashAttribute("reserr", "Assigned assets are not updated ");
+				return "redirect:/viewassignedassets";
+			}
+		}
+		else
 		{
-			attr.addFlashAttribute("response", "Assigned assets updated successfully");
-			return "redirect:/viewassignedassets";
+			attr.addFlashAttribute("reserr", "To retrieve Assets goto view employeed");
+			return "redirect:/viewemployees";
 		}
-		else {
-			attr.addFlashAttribute("reserr", "Assigned assets are not updated ");
-			return "redirect:/viewassignedassets";
-		}
+		
 		
 	}
 	
@@ -356,7 +385,6 @@ public class EmployeeController {
 	
 			List<AssetAssignHistory> ahist = histserv.getAssetAssignHistoryEmpId(id);
 			
-			
 			model.addAttribute("ahist", ahist);
 			model.addAttribute("emp", empl);
 			return "ViewEmployeeHistory";
@@ -374,21 +402,20 @@ public class EmployeeController {
 	{
 		List<Employee> emp = empserv.getEmployeeAssignAssetsByEmpId(id);
 		
-		//StringBuilder asid = new StringBuilder();
-		
 		Employee empl = null;
 		for(int i=0;i<emp.size();i++)
 		{
 			empl = emp.get(i);
 		}
 		
+		
 		if(empl!=null)
 		{
 			if(empl.getAsset_ids()!=null)
 			{
-				List<Asset>  	aslist 	= asservice.getAllAssets();
+				List<Asset>  aslist 	= asservice.getAllAssets();
 				
-				// This will Convert the String into array of string 
+				// This will Convert the String into Array of String 
 				String[] string = empl.getAsset_ids().replaceAll("\\[","").replaceAll("]","").split(",");
 				
 				Long[] strArray = new Long[string.length];
@@ -405,12 +432,11 @@ public class EmployeeController {
 				return "RetrieveAssets";
 			}
 			else {
-				attr.addFlashAttribute("reserr", "No Asset(s) is assigned to the Employee");
-				return "redirect:/viewemployees";
+					attr.addFlashAttribute("reserr", "No Asset(s) are assigned to the employee");
+					return "redirect:/viewemployees";
 			}
 		}
 		else {
-		
 			attr.addFlashAttribute("reserr", "No Employee found for given Id");
 			return "redirect:/viewemployees";
 		}
@@ -424,7 +450,6 @@ public class EmployeeController {
 		{
 			attr.addFlashAttribute("response", "Asset(s) Retrieved Successfully...");
 			return "redirect:/viewemployees";
-			
 		}
 		else {
 			attr.addFlashAttribute("reserr", "Asset(s) are not Retrieved ");
@@ -434,5 +459,4 @@ public class EmployeeController {
 	
 	
 }
-
 
