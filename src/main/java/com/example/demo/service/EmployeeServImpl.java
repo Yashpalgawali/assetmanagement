@@ -137,6 +137,8 @@ public class EmployeeServImpl implements EmployeeService {
 	public boolean isAssetAssigned(Long empid,Long assetid) {
 		// TODO Auto-generated method stub
 		
+		System.out.println("Inside the isAssetAssigned service empId->> "+empid+" and the asset ID is ->>"+assetid);
+		
 		return emprepo.isAssetAssigned(empid, assetid);
 	}
 

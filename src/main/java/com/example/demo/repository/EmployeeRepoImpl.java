@@ -432,10 +432,12 @@ public class EmployeeRepoImpl implements EmployeeRepository {
 		
 		int res = temp.queryForObject("SELECT COUNT(assigned_asset_id) FROM tbl_assigned_assets WHERE emp_id='"+empid+"' AND asset_id='"+assetid+"'", Integer.class);
 		if(res>0)
-		{
+		{	
+			System.out.println("Inside the isAssetAssigned repository empId->> "+empid+" and the asset ID is ->>"+assetid+" and the count is ->>"+res+"\n");
 			return true;
 		}
 		else {
+			System.out.println("Inside the isAssetAssigned repository empId->> "+empid+" and the asset ID is ->>"+assetid+" and the count is ->>"+res+"\n");
 			return false;
 		}
 	}

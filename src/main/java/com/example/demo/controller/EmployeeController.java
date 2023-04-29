@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -296,6 +297,8 @@ public class EmployeeController {
 		
 		List<Employee> emplist = empserv.getEmployeeAssignAssetsByEmpId(""+empl.getEmp_id());
 		
+		String assigned_assets = emplist.get(0).getAsset_ids();
+		
 		int assignedassetlen = emplist.get(0).getAsset_ids().length();
 		int newassetassignlen = multi_asset_id.length();
 		
@@ -308,7 +311,7 @@ public class EmployeeController {
 		boolean result ;
 		
 		if(newassetassignlen>=assignedassetlen)
-		{	
+		{
 		 for(int i=0;i<chararr.length;i++)
 		 {
 			if(Character.isDigit(chararr[i]))
@@ -339,6 +342,12 @@ public class EmployeeController {
 						
 					res  =	assignedassetserv.saveAssignedAssets(assts);
 					
+					if(res>0)
+					{
+						int qty = asservice.getAssetQuantity((long)asid);
+						qty-=1;
+						asservice.updateAssetQuantityByAssetId((long)asid, ""+qty);
+					}
 					rhist = assetassignserv.saveAssignAssetHistory(ahist);
 				}
 			 }
@@ -353,13 +362,85 @@ public class EmployeeController {
 				return "redirect:/viewassignedassets";
 			}
 		}
-		else
-		{
-			attr.addFlashAttribute("reserr", "To retrieve Assets goto view employeed");
-			return "redirect:/viewemployees";
-		}
 		
+		if(newassetassignlen<assignedassetlen)
+		{	
+		 System.err.println("new asset length is less than assigned one\n");
+		 
+		 String assigned_asset_ids = emplist.get(0).getAsset_ids();// Already Assigned assets
+		 
+		 char nchararr[] = assigned_asset_ids.toCharArray();
+		 
+		 System.out.println("\n New assigned assets are -->> "+multi_asset_id+"\n Already assigned asset ids ->> "+assigned_asset_ids+"\n");
+		 
+		 List<String> slit = Arrays.asList(multi_asset_id);// New Assets to be assigned
+		 
+		 int asid ;
+		 
+		 for(int i=0;i<nchararr.length;i++)
+		 {
+			 if(Character.isDigit(nchararr[i]))
+			 {
+				asid = Character.getNumericValue(nchararr[i]);
+				
+				Boolean isContainstheval = multi_asset_id.contains(""+asid);
+				
+				if(isContainstheval)
+				{
+					//System.out.println("\nIt Contains the asset id -->> "+asid);
+					continue;
+				}
+				else {
+					System.out.println("\n In the else Block \nAsset Id is which needs to be retrieved ->> "+asid+"\n");
+					
+					result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);
+					
+					System.err.println("\n The asset is assigned ->> "+result+"\n");
+					
+					if(result)
+					{
+						System.out.println("\n the asset is asigned result true \n"+result +"\n");
+						//empl.setAsset_id((long)asid);
+						
+						int retrieveasset = assignedassetserv.deleteAssignedAssetByEmpAndAssetId(asid, empl.getEmp_id());
+						
+						System.err.println("\n The asset is deleted .result ->> "+retrieveasset+"\n");
+						
+						if(retrieveasset>0)
+						{
+							System.err.println("\n the asset is retrieved success\n");
+							int qtyy = asservice.getAssetQuantity((long)asid);
+							qtyy+=1;
+							asservice.updateAssetQuantityByAssetId((long)asid, ""+qtyy);
+						}
+						
+						AssetAssignHistory ahist = new AssetAssignHistory();
+						
+							ahist.setAsset_id((long)asid);
+							ahist.setOperation_date(tday);
+							ahist.setOperation_time(ttime);
+							ahist.setOperation("Asset Retrieved");
+							ahist.setEmp_id(empl.getEmp_id());
+							
+						rhist = assetassignserv.saveAssignAssetHistory(ahist);
+						System.err.println("\n retrieved Asset ID is ---> "+asid);
+					}
+				 }
+			}
+		  }
+		 	if(rhist > 0)
+			{
+				attr.addFlashAttribute("response", "Assigned assets updated successfully");
+				return "redirect:/viewassignedassets";
+			}
+			else {
+				attr.addFlashAttribute("reserr", "Assigned assets are not updated ");
+				return "redirect:/viewassignedassets";
+			}
+		 }
 		
+		attr.addFlashAttribute("reserr", "To retrieve Assets goto view employeed");
+		return "redirect:/viewemployees";
 	}
 	
 	@GetMapping("/viewallemployees")
