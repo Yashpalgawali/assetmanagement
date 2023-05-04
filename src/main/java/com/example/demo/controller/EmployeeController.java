@@ -304,7 +304,6 @@ public class EmployeeController {
 		int assignedassetlen = emplist.get(0).getAsset_ids().length();
 		int newassetassignlen = multi_asset_id.length();
 		
-		System.err.println("Assigned asset length is ---->>> "+assignedassetlen+"\n New assets length is "+newassetassignlen);
 		
 		int res = 0,rhist=0;
 		
@@ -367,13 +366,10 @@ public class EmployeeController {
 		
 		if(newassetassignlen<assignedassetlen)
 		{	
-		 System.err.println("new asset length is less than assigned one\n");
 		 
 		 String assigned_asset_ids = emplist.get(0).getAsset_ids();// Already Assigned assets
 		 
 		 char nchararr[] = assigned_asset_ids.toCharArray();
-		 
-		 System.out.println("\n New assigned assets are -->> "+multi_asset_id+"\n Already assigned asset ids ->> "+assigned_asset_ids+"\n");
 		 
 		 List<String> slit = Arrays.asList(multi_asset_id);// New Assets to be assigned
 		 
@@ -389,28 +385,22 @@ public class EmployeeController {
 				
 				if(isContainstheval)
 				{
-					//System.out.println("\nIt Contains the asset id -->> "+asid);
 					continue;
 				}
 				else {
-					System.out.println("\n In the else Block \nAsset Id is which needs to be retrieved ->> "+asid+"\n");
 					
 					result  = empserv.isAssetAssigned(empl.getEmp_id(),(long)asid);
 					
-					System.err.println("\n The asset is assigned ->> "+result+"\n");
 					
 					if(result)
 					{
-						System.out.println("\n the asset is asigned result true \n"+result +"\n");
 						//empl.setAsset_id((long)asid);
 						
 						int retrieveasset = assignedassetserv.deleteAssignedAssetByEmpAndAssetId(asid, empl.getEmp_id());
 						
-						System.err.println("\n The asset is deleted .result ->> "+retrieveasset+"\n");
-						
 						if(retrieveasset>0)
 						{
-							System.err.println("\n the asset is retrieved success\n");
+							
 							int qtyy = asservice.getAssetQuantity((long)asid);
 							qtyy+=1;
 							asservice.updateAssetQuantityByAssetId((long)asid, ""+qtyy);
@@ -425,7 +415,7 @@ public class EmployeeController {
 							ahist.setEmp_id(empl.getEmp_id());
 							
 						rhist = assetassignserv.saveAssignAssetHistory(ahist);
-						System.err.println("\n retrieved Asset ID is ---> "+asid);
+						
 					}
 				 }
 			}
