@@ -118,7 +118,7 @@ public class AssetmanagementNoJpaApplication extends SpringBootServletInitialize
 //	        productsList.add(new Company(2,"Dell Laptop",30000f));  
 //	        productsList.add(new Company(3,"Lenevo Laptop",28000f));  
 //	        productsList.add(new Company(4,"Sony Laptop",28000f));  
-//	        productsList.add(new Company(5,"Apple Laptop"));  
+//	        productsList.add(new Company(5,"Apple Laptop"));
 	        
 	}
 }

@@ -30,7 +30,7 @@ public class AssignedAssetsServiceImpl implements AssignedAssetsService {
 	@Override
 	public int deleteAssignedAssetByEmpAndAssetId(int asset_id, Long emp_id) {
 		// TODO Auto-generated method stub
-		return 0;
+		return assetrepo.deleteAssignedAssetByEmpAndAssetId(asset_id, emp_id);
 	}
 
 	

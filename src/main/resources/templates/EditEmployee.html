@@ -164,14 +164,14 @@
 					  <div class="form-group">
 						<label for="multi_assets">Assets</label> 
 						<select class="form-control mb-3"  id="multi_assets" name="multi_assets" multiple="multiple">
-							
-							<th:block th:each="alst : ${aslist}"> <!-- 1,2,3,4,5  -->
-									<th:block th:each="astr : ${assignedlist}">  <!-- 1,4,5  -->
-										<th:block th:if="${#arrays.contains(alst.asset_id, astr)}">
+	
+
+							<th:block th:each="alst : ${aslist}"> <!--  1,2,3,4,5  --> 
+										<th:block th:if="${#arrays.contains( assignedlist,alst.asset_id )}">
 												<option selected th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option>
 										</th:block>
 										
-										<th:block th:unless="${#arrays.contains(alst.asset_id, astr)}"> 
+										<th:block th:unless="${#arrays.contains(assignedlist,alst.asset_id)}"> 
 											<th:block th:if="${alst.quantity}>0">		
 												<option  th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option> 
 											</th:block>
@@ -179,8 +179,7 @@
 												<option  disabled th:value="${alst.asset_id}" th:text="| (${alst.assettype.type_name}) ${alst.asset_name} (${alst.asset_number})|"></option> 
 											</th:block>
 										</th:block> 
-									</th:block>
-									
+
 							</th:block>
 						</select>
 					  </div>

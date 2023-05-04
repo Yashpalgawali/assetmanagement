@@ -233,7 +233,9 @@ public class EmployeeController {
 					{
 						strArray[i] = Long.valueOf(string[i]);
 					}
+					
 					model.addAttribute("assignedlist", strArray);
+					
 					return "EditEmployee";
 				}
 				else
