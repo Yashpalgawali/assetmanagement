@@ -481,7 +481,6 @@ public class EmployeeController {
 			empl = emp.get(i);
 		}
 		
-		
 		if(empl!=null)
 		{
 			if(empl.getAsset_ids()!=null)
@@ -501,6 +500,11 @@ public class EmployeeController {
 				model.addAttribute("aslist", 	aslist);
 				model.addAttribute("emp", 		empl);
 				model.addAttribute("assignedlist", strArray);
+				
+				for(int i=0;i<strArray.length;i++)
+				{
+					System.err.println(strArray[i]);
+				}
 				
 				return "RetrieveAssets";
 			}

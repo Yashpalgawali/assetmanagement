@@ -18,24 +18,7 @@
 <title>Retrieve Asset(s) </title>
 
 <script>
-	
-	function getdeptbycompid(cid)
-	{
-		$('#dept_id').empty();
-		$('#dept_id').append("<option selected disabled>Please Select Department</option>");
-		
-		$.ajax({
-				url		:	'/getdeptbycompid/'+cid,
-				type	:	'GET',
-				dataType:	'JSON',
-				success : 	function(result)
-				{
-					$.each(result,function(i){
-						$('#dept_id').append("<option value='"+result[i].dept_id+"'>"+result[i].dept_name+"</option>");	
-					});
-				}
-		});
-	}
+
 	
 	$(document).ready(function() {
 
@@ -44,7 +27,6 @@
 			width 		: 'resolve',
 			placeholder : 'Please Select Asset(s) ',
 			allowClear 	:  true
-
 		});
 	})
 </script>

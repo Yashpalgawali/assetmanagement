@@ -105,7 +105,6 @@ public class AssignedAssetsRepoImpl implements AssignedAssetsRepo {
 			public void setValues(PreparedStatement ps) throws SQLException {
 				// TODO Auto-generated method stub
 				
-				
 				ps.setLong(1, emp_id);
 				ps.setInt(2, asset_id);
 			}
