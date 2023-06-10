@@ -50,7 +50,7 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 	@Override
 	public List<AssetAssignHistory> getAllAssignedAssetsHistory() {
 		// TODO Auto-generated method stub
-		return temp.query("SELECT hist.*,te.*,dep.*,tbl_company.*,tas.*,tbl_assettype.*,GROUP_CONCAT(DISTINCT tas.asset_name),GROUP_CONCAT(DISTINCT tbl_assettype.type_name)  FROM tbl_asset_assign_history hist JOIN tbl_employee te ON te.emp_code=hist.emp_code JOIN tbl_asset tas ON tas.asset_id=te.asset_id JOIN tbl_department dep ON dep.dept_id=te.dept_id JOIN tbl_company ON tbl_company.comp_id=dep.comp_id JOIN tbl_assettype ON tbl_assettype.type_id=tas.type_id GROUP BY hist.emp_code", new RowMapper<>() {
+		return temp.query("SELECT hist.*,te.*,dep.*,tbl_company.*,tas.*,tbl_assettype.*,GROUP_CONCAT(DISTINCT tas.asset_name),GROUP_CONCAT(DISTINCT tbl_assettype.type_name)  FROM tbl_asset_assign_history hist JOIN tbl_employee te ON te.emp_code=hist.emp_code JOIN tbl_asset tas ON tas.asset_id=te.asset_id JOIN tbl_department dep ON dep.dept_id=te.dept_id JOIN tbl_company ON tbl_company.comp_id=dep.comp_id JOIN tbl_assettype ON tbl_assettype.type_id=tas.type_id GROUP BY hist.emp_code", new RowMapper<AssetAssignHistory>() {
 
 			@Override
 			public AssetAssignHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -114,8 +114,8 @@ public class AssetAssignHistoryRepoImpl implements AssetAssignHistoryRepo {
 	public List<AssetAssignHistory> getAssetAssignHistoryEmpId(String empid) {
 		// TODO Auto-generated method stub
 		
-//		return temp.query("SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"' ORDER BY tbl_asset_assign_history.operation_date ASC", new RowMapper<>() {
-		return temp.query("SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<>() {
+//		return temp.query("SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_assettype ON tbl_assettype.type_id=tbl_asset.type_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"' ORDER BY tbl_asset_assign_history.operation_date ASC", new RowMapper<AssetAssignHistory>() {
+		return temp.query("SELECT * FROM tbl_asset_assign_history  JOIN  tbl_employee ON tbl_asset_assign_history.emp_id=tbl_employee.emp_id JOIN tbl_asset ON tbl_asset.asset_id=tbl_asset_assign_history.asset_id JOIN tbl_designation ON tbl_designation.desig_id=tbl_employee.desig_id JOIN tbl_department ON tbl_department.dept_id=tbl_employee.dept_id JOIN tbl_company ON tbl_company.comp_id=tbl_department.comp_id WHERE tbl_employee.emp_id='"+empid+"'", new RowMapper<AssetAssignHistory>() {
 			@Override
 			public AssetAssignHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
 				// TODO Auto-generated method stub
